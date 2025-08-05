@@ -158,8 +158,20 @@
         /* HERO SECTION                                */
         /* =========================================== */
         
-        .hero {
+	/* Update your .hero class */
+	.hero {
+    	/* Fallback for older browsers */
             height: 100vh;
+            min-height: 100vh;
+    
+            /* Modern browsers */
+            height: 100dvh;
+            min-height: 100dvh;
+    
+            /* Safari-specific */
+            min-height: -webkit-fill-available;
+    
+            /* Your existing styles */
             position: relative;
             overflow: hidden;
             display: flex;
