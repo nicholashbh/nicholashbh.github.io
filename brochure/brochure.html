@@ -155,6 +155,118 @@
         
         
         /* =========================================== */
+        /* SCROLL INDICATOR STYLES                     */
+        /* =========================================== */
+        
+        /* Position variables for easy adjustment */
+        :root {
+            --scroll-indicator-bottom: 3rem;  /* Adjust distance from bottom */
+            --scroll-indicator-left: 50%;     /* Adjust horizontal position (use % or px) */
+        }
+        
+        /* Scroll indicator container */
+        .scroll-indicator {
+            position: absolute;
+            bottom: var(--scroll-indicator-bottom);
+            left: var(--scroll-indicator-left);
+            transform: translateX(-50%);
+            z-index: 100;
+            opacity: 0;
+            animation: scrollIndicatorFadeIn 0.8s ease-out 0.5s forwards;
+            cursor: pointer;
+            transition: opacity 0.5s ease;
+        }
+        
+        /* Hide on scroll */
+        .scroll-indicator.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        /* Pulsing circle */
+        .scroll-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--primary-navy) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 
+                0 4px 20px rgba(0, 180, 216, 0.4),
+                0 0 0 0 rgba(0, 180, 216, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            animation: 
+                pulseGlow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite,
+                bounce 2s ease-in-out infinite;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Hover state */
+        .scroll-circle:hover {
+            transform: scale(1.1);
+            background: linear-gradient(135deg, var(--primary-navy) 0%, var(--accent-cyan) 100%);
+            box-shadow: 
+                0 8px 30px rgba(0, 180, 216, 0.6),
+                0 0 0 5px rgba(0, 180, 216, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Arrow icon */
+        .scroll-arrow {
+            color: white;
+            animation: arrowMove 2s ease-in-out infinite;
+        }
+        
+        /* Fade in animation */
+        @keyframes scrollIndicatorFadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+        
+        /* Pulsing glow animation */
+        @keyframes pulseGlow {
+            0%, 100% {
+                box-shadow: 
+                    0 4px 20px rgba(0, 180, 216, 0.4),
+                    0 0 0 0 rgba(0, 180, 216, 0.4),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            }
+            50% {
+                box-shadow: 
+                    0 4px 20px rgba(0, 180, 216, 0.6),
+                    0 0 0 15px rgba(0, 180, 216, 0),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            }
+        }
+        
+        /* Bounce animation */
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+        
+        /* Arrow movement */
+        @keyframes arrowMove {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(3px);
+            }
+        }
+        
+        
+        /* =========================================== */
         /* HERO SECTION                                */
         /* =========================================== */
         
@@ -699,7 +811,7 @@
         /* =========================================== */
         
         .stats {
-            background-image: url('https://xavierchee.github.io/brochure/banner_programme_at_a_glance.png');
+            background-image: url('https://nicholashbh.github.io/brochure/banner_programme_at_a_glance.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -1553,7 +1665,7 @@
         .feature-icon img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
             border-radius: inherit;
         }
         
@@ -2017,28 +2129,7 @@
             transform: scale(1.05);
         }
         
-        /* Gallery item overlay */
-        .gallery-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 100%);
-            padding: 1.5rem;
-            transform: translateY(100%);
-            transition: transform 0.3s ease;
-        }
-        
-        .gallery-item:hover .gallery-overlay {
-            transform: translateY(0);
-        }
-        
-        .gallery-caption {
-            color: var(--white);
-            font-size: 0.9rem;
-            font-weight: 500;
-            line-height: 1.4;
-        }
+        /* Gallery item overlay removed - no captions needed */
         
         /* Gallery navigation */
         .gallery-nav {
@@ -2638,6 +2729,8 @@
             line-height: 1.8;
             color: var(--dark-gray);
             margin-bottom: 1.5rem;
+			text-align: justify;
+			text-justify: inter-word;
         }
         
         /* Director Column */
@@ -2735,6 +2828,7 @@
             font-size: 1.05rem;
             line-height: 1.7;
             position: relative;
+			text-align: justify;
         }
         
         /* Highlight box for emphasis */
@@ -2775,7 +2869,7 @@
         <!-- Left side: Logo -->
         <div class="split-left">
         <div class="logo-wrapper" id="overlayLogo">
-        <img src="https://xavierchee.github.io/brochure/nuhs_logo.png" alt="NUHS" class="nuhs-logo">
+        <img src="https://nicholashbh.github.io/brochure/nuhs_logo.png" alt="NUHS" class="nuhs-logo">
         </div>
         <div class="accent-line"></div>
         </div>
@@ -2804,7 +2898,7 @@
         <div class="nav-container">
             <!-- Logo section -->
             <div class="logo" id="headerLogo">
-                <img src="https://xavierchee.github.io/brochure/nuhs_logo.png" alt="NUHS" class="header-logo-img" id="headerLogoImg">
+                <img src="https://nicholashbh.github.io/brochure/nuhs_logo.png" alt="NUHS" class="header-logo-img" id="headerLogoImg">
                 <span class="logo-text">Preventive Medicine</span>
             </div>
             
@@ -2814,7 +2908,6 @@
                 <li><a href="#structure">Programme</a></li>
                 <li><a href="#features">Curriculum</a></li>
                 <li><a href="#life-programme">Testimonials</a></li>
-                <li><a href="#apply">Apply</a></li>
             </ul>
         </div>
     </nav>
@@ -2826,7 +2919,7 @@
     <section class="hero">
         <!-- Video background -->
         <video class="hero-video" autoplay loop muted playsinline>
-            <source src="https://xavierchee.github.io/brochure/background_vid.mp4" type="video/mp4">
+            <source src="https://nicholashbh.github.io/brochure/background_vid.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
         
@@ -2842,10 +2935,15 @@
                 <p class="hero-subtitle" id="heroTagline">Prevent Today, Protect Tomorrow</p>
             </div>
             
-            <!-- Call-to-action buttons -->
-            <div class="cta-buttons">
-                <a href="#apply" class="btn btn-primary"><span>Apply Now</span></a>
-                <a href="#about" class="btn btn-secondary">Explore Programme</a>
+            <!-- Call-to-action buttons removed as requested -->
+        </div>
+        
+        <!-- Scroll Down Indicator -->
+        <div class="scroll-indicator" id="scrollIndicator">
+            <div class="scroll-circle">
+                <svg class="scroll-arrow" viewBox="0 0 24 24" width="24" height="24">
+                    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" fill="currentColor"/>
+                </svg>
             </div>
         </div>
     </section>
@@ -2897,9 +2995,7 @@
                     </div>
                     <div class="director-quote-section">
                         <p class="director-quote">
-                            "With the challenges facing Singapore, Preventive Medicine physicians are needed as never before, 
-                            but they must prove their value to the organisations and the society they serve, and justify the 
-                            leadership positions that they are placed in."
+							With the challenges facing Singapore, Preventive Medicine physicians are needed as never before ... Singapore faces a converges of an ageing population, increasing chronic disease, escalating healthcare costs and a maelstrom of healthcare reforms at macro, meso and micro levels. These are bread-and-butter issues for the Preventive Medicine practitioner.
                         </p>
                         <p style="font-size: 0.9rem; margin-top: 1rem; font-style: normal; color: var(--accent-cyan);">
                             — Interview with Singapore Medical Association, 2018 
@@ -2918,7 +3014,7 @@
                 <!-- Mission card -->
                 <div class="about-card with-image animate-on-scroll fade-up delay-3">
                     <div class="about-image">
-                        <img src="https://xavierchee.github.io/brochure/mission_driven.png" 
+                        <img src="https://nicholashbh.github.io/brochure/mission_driven.png" 
                              alt="Mission-Driven Healthcare" 
                              loading="lazy">
                     </div>
@@ -2934,15 +3030,14 @@
                 <!-- Training sites card -->
                 <div class="about-card with-image animate-on-scroll fade-up delay-4">
                     <div class="about-image">
-                        <img src="https://xavierchee.github.io/brochure/diverse_training.png" 
+                        <img src="https://nicholashbh.github.io/brochure/diverse_training.png" 
                              alt="Diverse Training Sites" 
                              loading="lazy">
                     </div>
                     <div class="card-content">
                         <h3>Diverse Training Sites</h3>
                         <p>
-                            Rotate through prestigious institutions including MOH, HPB, MOM, SAF, and all major 
-                            healthcare clusters for comprehensive exposure.
+                            Rotate through ministries and statutory agencies including MOH, HPB, MOM, SAF, and all major healthcare clusters for comprehensive exposure.
                         </p>
                     </div>
                 </div>
@@ -2950,15 +3045,14 @@
                 <!-- Professional excellence card -->
                 <div class="about-card with-image animate-on-scroll fade-up delay-5">
                     <div class="about-image">
-                        <img src="https://xavierchee.github.io/brochure/professional_excellence.png" 
+                        <img src="https://nicholashbh.github.io/brochure/professional_excellence.png" 
                              alt="Professional Excellence" 
                              loading="lazy">
                     </div>
                     <div class="card-content">
                         <h3>Professional Excellence</h3>
                         <p>
-                            Mandatory Master of Public Health from NUS with specializations in Occupational 
-                            Health and other cutting-edge areas.
+							Mandatory MPH from NUS or recognized institutions, alongside structured assessments, to ensure technical competency
                         </p>
                     </div>
                 </div>
@@ -2995,7 +3089,7 @@
                 </div>
                 <div class="stat-item animate-on-scroll fade-up delay-3">
                     <h3 class="stat-number" data-count="100" data-suffix="%">0</h3>
-                    <p>MPH Sponsorship</p>
+                    <p>Sponsorship for Part-time MPH</p>
                 </div>
             </div>
         </div>
@@ -3022,7 +3116,7 @@
                 <div class="timeline-item animate-on-scroll fade-up">
                     <div class="timeline-content" id="juniorResidency">
                         <div class="timeline-image">
-                            <img src="https://xavierchee.github.io/brochure/junior_residency.png" 
+                            <img src="https://nicholashbh.github.io/brochure/junior_residency.png" 
                                  alt="Junior Residency Training" 
                                  loading="lazy">
                             <div class="timeline-header">
@@ -3037,10 +3131,9 @@
                         </div>
                         <div class="timeline-body">
                             <ul>
-                                <li>Master of Public Health degree</li>
-                                <li>Core rotations in primary care, infectious disease, and policy</li>
-                                <li>Foundation competencies in epidemiology and biostatistics</li>
-                                <li>Tailored rotations based on interests</li>
+                                <li>Completed and passed the MPH or equivalent</li>
+                                <li>Passed the Progression Preventive Medicine Competency Committee Review</li>
+                                <li>PD certification of successful completion of R3</li>
                             </ul>
                         </div>
                     </div>
@@ -3050,7 +3143,7 @@
                 <div class="timeline-item animate-on-scroll fade-up delay-2">
                     <div class="timeline-content" id="seniorResidency">
                         <div class="timeline-image">
-                            <img src="https://xavierchee.github.io/brochure/senior_residency.png" 
+                            <img src="https://nicholashbh.github.io/brochure/senior_residency.png" 
                                  alt="Senior Residency Training" 
                                  loading="lazy">
                             <div class="timeline-header">
@@ -3065,10 +3158,10 @@
                         </div>
                         <div class="timeline-body">
                             <ul>
-                                <li>Advanced rotations at 2+ sites</li>
-                                <li>Leadership development</li>
-                                <li>Research and publication</li>
-                                <li>Exit examination preparation</li>
+                                <li>Advanced rotations at 2+ sites (different organisations)</li>
+                                <li>Written exam</li>
+                                <li>Oral assessment (viva voce)</li>
+                                <li>First author publication or technical/process reports on related field</li>
                             </ul>
                         </div>
                     </div>
@@ -3087,7 +3180,7 @@
             <!-- Section header -->
             <div class="section-header">
                 <span class="section-badge">Core Competencies</span>
-                <h2>Master Eight Essential Domains</h2>
+                <h2>Main Themes and Essential Domains</h2>
                 <p class="section-subtitle">
                     Build expertise across the full spectrum of preventive medicine
                 </p>
@@ -3109,7 +3202,7 @@
             <div class="tab-content active" id="domains-tab">
                 <div class="subsection-header animate-on-scroll fade-up delay-3">
                     <h3>Domains & Skills</h3>
-                    <p>Disciplines or Technical Skills - How you work on it</p>
+                    <p>Some of the Disciplines or Technical Skills you will use</p>
                 </div>
                 
                 <!-- Domains grid -->
@@ -3118,7 +3211,7 @@
                     <div class="feature-card animate-on-scroll fade-up">
                         <span class="feature-elaboration">Whole and Sum of Parts</span>
                         <div class="feature-icon domain-icon">
-                            <img src="https://xavierchee.github.io/brochure/skills/health_systems.png" alt="Health Systems" loading="lazy">
+                            <img src="https://nicholashbh.github.io/brochure/skills/health_systems.png" alt="Health Systems" loading="lazy">
                         </div>
                         <h3>Health Systems</h3>
                     </div>
@@ -3127,7 +3220,7 @@
                     <div class="feature-card animate-on-scroll fade-up delay-1">
                         <span class="feature-elaboration">Making Things Happen</span>
                         <div class="feature-icon domain-icon">
-                            <img src="https://xavierchee.github.io/brochure/skills/evaluation_sciences.png" alt="Evaluation Sciences" loading="lazy">
+                            <img src="https://nicholashbh.github.io/brochure/skills/evaluation_sciences.png" alt="Evaluation Sciences" loading="lazy">
                         </div>
                         <h3>Evaluation Sciences</h3>
                     </div>
@@ -3136,7 +3229,7 @@
                     <div class="feature-card animate-on-scroll fade-up delay-2">
                         <span class="feature-elaboration">Using Technology and Data</span>
                         <div class="feature-icon domain-icon">
-                            <img src="https://xavierchee.github.io/brochure/skills/digital_informatics.png" alt="Digital Informatics" loading="lazy">
+                            <img src="https://nicholashbh.github.io/brochure/skills/digital_informatics.png" alt="Digital Informatics" loading="lazy">
                         </div>
                         <h3>Digital Informatics</h3>
                     </div>
@@ -3145,7 +3238,7 @@
                     <div class="feature-card animate-on-scroll fade-up delay-3">
                         <span class="feature-elaboration">Beyond Borders</span>
                         <div class="feature-icon domain-icon">
-                            <img src="https://xavierchee.github.io/brochure/skills/global_and_international_health.png" alt="Global & International Health" loading="lazy">
+                            <img src="https://nicholashbh.github.io/brochure/skills/global_and_international_health.png" alt="Global & International Health" loading="lazy">
                         </div>
                         <h3>Global & International Health</h3>
                     </div>
@@ -3154,7 +3247,7 @@
                     <div class="feature-card animate-on-scroll fade-up delay-4">
                         <span class="feature-elaboration">Doing things Right</span>
                         <div class="feature-icon domain-icon">
-                            <img src="https://xavierchee.github.io/brochure/skills/health_policy.png" alt="Health Policy, Law & Ethics" loading="lazy">
+                            <img src="https://nicholashbh.github.io/brochure/skills/health_policy.png" alt="Health Policy, Law & Ethics" loading="lazy">
                         </div>
                         <h3>Health Policy, Law & Ethics</h3>
                     </div>
@@ -3163,7 +3256,7 @@
                     <div class="feature-card animate-on-scroll fade-up delay-5">
                         <span class="feature-elaboration">Counting Numbers</span>
                         <div class="feature-icon domain-icon">
-                            <img src="https://xavierchee.github.io/brochure/skills/epidiemology.png" alt="Epidemiology & Quantitative Methods" loading="lazy">
+                            <img src="https://nicholashbh.github.io/brochure/skills/epidiemology.png" alt="Epidemiology & Quantitative Methods" loading="lazy">
                         </div>
                         <h3>Epidemiology & Quantitative Methods</h3>
                     </div>
@@ -3172,7 +3265,7 @@
                     <div class="feature-card animate-on-scroll fade-up delay-6">
                         <span class="feature-elaboration">Telling Stories</span>
                         <div class="feature-icon domain-icon">
-                            <img src="https://xavierchee.github.io/brochure/skills/social_sciences.png" alt="Social Science & Qualitative Methods" loading="lazy">
+                            <img src="https://nicholashbh.github.io/brochure/skills/social_sciences.png" alt="Social Science & Qualitative Methods" loading="lazy">
                         </div>
                         <h3>Social Science & Qualitative Methods</h3>
                     </div>
@@ -3181,7 +3274,7 @@
                     <div class="feature-card animate-on-scroll fade-up">
                         <span class="feature-elaboration">Health at Work</span>
                         <div class="feature-icon domain-icon">
-                            <img src="https://xavierchee.github.io/brochure/skills/occupational_and_env_health.png" alt="Occupational and Environmental Health" loading="lazy">
+                            <img src="https://nicholashbh.github.io/brochure/skills/occupational_and_env_health.png" alt="Occupational and Environmental Health" loading="lazy">
                         </div>
                         <h3>Occupational and Environmental Health</h3>
                     </div>
@@ -3192,7 +3285,7 @@
             <div class="tab-content" id="topics-tab">
                 <div class="subsection-header animate-on-scroll fade-up delay-3">
                     <h3>Preventive Medicine Topics</h3>
-                    <p>Substantive Fields of Knowledge - What you work on</p>
+                    <p>Some of the Fields of Knowledge you will work on</p>
                 </div>
                 
                 <!-- Topics grid -->
@@ -3201,7 +3294,7 @@
                     <div class="feature-card animate-on-scroll fade-up">
                         <span class="feature-elaboration">Prevention and control strategies</span>
                         <div class="feature-icon topic-icon">
-                            <img src="https://xavierchee.github.io/brochure/topics/infectious_disease.png" alt="Infectious Disease" loading="lazy">
+                            <img src="https://nicholashbh.github.io/brochure/topics/infectious_disease.png" alt="Infectious Disease" loading="lazy">
                         </div>
                         <h3>Infectious Disease</h3>
                     </div>
@@ -3210,7 +3303,7 @@
                     <div class="feature-card animate-on-scroll fade-up delay-1">
                         <span class="feature-elaboration">End-of-life and geriatric health</span>
                         <div class="feature-icon topic-icon">
-                            <img src="https://xavierchee.github.io/brochure/topics/ageing.png" alt="Ageing and Palliative Care" loading="lazy">
+                            <img src="https://nicholashbh.github.io/brochure/topics/ageing.png" alt="Ageing and Palliative Care" loading="lazy">
                         </div>
                         <h3>Ageing and Palliative Care</h3>
                     </div>
@@ -3219,7 +3312,7 @@
                     <div class="feature-card animate-on-scroll fade-up delay-2">
                         <span class="feature-elaboration">Long-term condition management</span>
                         <div class="feature-icon topic-icon">
-                            <img src="https://xavierchee.github.io/brochure/topics/chronic disease.png" alt="Chronic Disease" loading="lazy">
+                            <img src="https://nicholashbh.github.io/brochure/topics/chronic disease.png" alt="Chronic Disease" loading="lazy">
                         </div>
                         <h3>Chronic Disease</h3>
                     </div>
@@ -3228,7 +3321,7 @@
                     <div class="feature-card animate-on-scroll fade-up delay-3">
                         <span class="feature-elaboration">Psychological wellbeing initiatives</span>
                         <div class="feature-icon topic-icon">
-                            <img src="https://xavierchee.github.io/brochure/topics/mental_health.png" alt="Mental Health" loading="lazy">
+                            <img src="https://nicholashbh.github.io/brochure/topics/mental_health.png" alt="Mental Health" loading="lazy">
                         </div>
                         <h3>Mental Health</h3>
                     </div>
@@ -3237,7 +3330,7 @@
                     <div class="feature-card animate-on-scroll fade-up delay-4">
                         <span class="feature-elaboration">Dietary health and food safety</span>
                         <div class="feature-icon topic-icon">
-                            <img src="https://xavierchee.github.io/brochure/topics/food_nutrition.png" alt="Food and Nutrition" loading="lazy">
+                            <img src="https://nicholashbh.github.io/brochure/topics/food_nutrition.png" alt="Food and Nutrition" loading="lazy">
                         </div>
                         <h3>Food and Nutrition</h3>
                     </div>
@@ -3246,7 +3339,7 @@
                     <div class="feature-card animate-on-scroll fade-up delay-5">
                         <span class="feature-elaboration">Family health and development</span>
                         <div class="feature-icon topic-icon">
-                            <img src="https://xavierchee.github.io/brochure/topics/maternal_child_health.png" alt="Maternal and Child Health" loading="lazy">
+                            <img src="https://nicholashbh.github.io/brochure/topics/maternal_child_health.png" alt="Maternal and Child Health" loading="lazy">
                         </div>
                         <h3>Maternal and Child Health</h3>
                     </div>
@@ -3255,7 +3348,7 @@
                     <div class="feature-card animate-on-scroll fade-up delay-6">
                         <span class="feature-elaboration">Population health management</span>
                         <div class="feature-icon topic-icon">
-                            <img src="https://xavierchee.github.io/brochure/topics/primary_care.png" alt="Primary and Community Care" loading="lazy">
+                            <img src="https://nicholashbh.github.io/brochure/topics/primary_care.png" alt="Primary and Community Care" loading="lazy">
                         </div>
                         <h3>Primary and Community Care</h3>
                     </div>
@@ -3264,7 +3357,7 @@
                     <div class="feature-card animate-on-scroll fade-up">
                         <span class="feature-elaboration">Personalized health approaches</span>
                         <div class="feature-icon topic-icon">
-                            <img src="https://xavierchee.github.io/brochure/topics/genomics_precision_med.png" alt="Genomics and Precision Medicine" loading="lazy">
+                            <img src="https://nicholashbh.github.io/brochure/topics/genomics_precision_med.png" alt="Genomics and Precision Medicine" loading="lazy">
                         </div>
                         <h3>Genomics and Precision Medicine</h3>
                     </div>
@@ -3317,7 +3410,7 @@
             
             <!-- Photo Gallery Section -->
             <div class="gallery-section animate-on-scroll fade-up delay-3">
-                <h3 class="subsection-title">Programme Highlights</h3>
+                <h3 class="subsection-title">Residents in Action</h3>
                 
                 <!-- Gallery Carousel Container -->
                 <div class="gallery-carousel">
@@ -3589,8 +3682,40 @@
         setTimeout(() => {
             rotateTagline();
             // Then rotate every 3.8 seconds (3s display + 0.8s transition)
-            setInterval(rotateTagline, 3800);
-        }, 3000);
+            setInterval(rotateTagline, 2800);
+        }, 2000);
+        
+        
+        // =============================================
+        // Scroll Indicator Functionality
+        // =============================================
+        
+        const scrollIndicator = document.getElementById('scrollIndicator');
+        let hasScrolled = false;
+        
+        // Hide indicator on scroll
+        function handleScrollIndicator() {
+            if (!hasScrolled && window.scrollY > 50) {
+                hasScrolled = true;
+                scrollIndicator.classList.add('hidden');
+            } else if (hasScrolled && window.scrollY <= 50) {
+                hasScrolled = false;
+                scrollIndicator.classList.remove('hidden');
+            }
+        }
+        
+        window.addEventListener('scroll', handleScrollIndicator);
+        
+        // Smooth scroll on click
+        scrollIndicator.addEventListener('click', () => {
+            const aboutSection = document.getElementById('about');
+            if (aboutSection) {
+                aboutSection.scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
         
         
         // =============================================
@@ -3780,88 +3905,97 @@
         
         // Testimonials Data - Easy to Edit
 const testimonials = [
-    {
-        name: "Dr. Leonara Liu",
-        year: "2018 cohort",
-        photo: "https://xavierchee.github.io/brochure/testimonials/leonara_liu.png",
-        testimonial: `I chose to join the National Preventive Medicine Residency (NPMR) Programme as I wanted to work at the systems level, to effect change that would benefit the health of communities and populations. To me, health goes beyond healthcare. Equally as important as the medical treatment of the sick are the preventative efforts to address the biological, social and environmental determinants of health.
-		
-Through a mandatory Master of Public Health (MPH) in junior residency, NPMR residents acquire essential knowledge in epidemiology, biostatistics and health behaviour change, among other areas. My rotations through public healthcare clusters and public health agencies (e.g. Ministry of Health) have allowed me to leverage on my experience in clinical medicine and apply public health principles learnt during my MPH to shape and operationalise healthcare policies.
-
-By working with a wide range of stakeholders including senior management, policy-makers, clinicians and researchers, the programme has also given me myriad opportunities to hone my collaboration and communication skills. For example, during my time in the Ministry of Health, I facilitated discussions between politicians, clinicians and representatives from the Ministry of Social and Family Development, to develop pilot programmes integrating upstream and downstream health and social care for Persons with Disabilities.
-
-Part of what makes Preventive Medicine (i.e. Public Health and Occupational Medicine) exciting to me is how broad the field is. Since rotations are tailored to each individual resident's interests, this translates into a heterogeneity of experiences among residents. This diversity among residents creates an environment that promotes an interdisciplinary approach to learning and problem-solving, and has trained me to consider each public health issue from different perspectives.`
-    },
-            {
-                name: "Dr. Nicholas Hang",
-                year: "2025 cohort",
-                photo: "https://xavierchee.github.io/brochure/testimonials/nick_hang.png", // Replace with actual URL
-                testimonial: `I chose Preventive Medicine because I want to impact health beyond individual patient encounters—focusing on populations and communities instead. The diversity of public health and occupational medicine is one of the most appealing aspects of this field. As I begin this program, I'm already seeing opportunities that exist well outside the traditional hospital setting, from workplace health assessments and environmental monitoring to policy development and community health programs.
+        {
+            name: "Dr. Nicholas Hang",
+            year: "2025 cohort",
+            photo: "https://nicholashbh.github.io/brochure/testimonials/nick_hang.png", // Replace with actual URL
+            testimonial: `I chose Preventive Medicine because I want to impact health beyond individual patient encounters—focusing on populations and communities instead. The diversity of public health and occupational medicine is one of the most appealing aspects of this field. As I begin this program, I'm already seeing opportunities that exist well outside the traditional hospital setting, from workplace health assessments and environmental monitoring to policy development and community health programs.
 
 The curriculum ahead covers epidemiology, biostatistics, health policy, and health promotion across various real-world applications. I'm looking forward to gaining experience in corporate settings, government agencies, research environments, and community organizations—each offering different perspectives on how to improve population health.
 
 Early in the program, I'm already working with management teams, policymakers, clinicians, and researchers, which is improving my ability to communicate across different professional contexts. The collaborative nature of this work is both challenging and engaging as we tackle the complex factors that influence health outcomes.
 
 I'm excited about the variety of roles available in preventive medicine and feel this program is setting me up well to address public health challenges in whatever setting I eventually choose. For anyone interested in population health, this program provides solid training and exposes you to career paths you probably haven't considered. The field offers more options than most people realize.`
-            },
-            {
-                name: "Dr. Priya Nair",
-                year: "PGY-5",
-                photo: "https://github.com/username/repo/raw/main/resident3.jpg", // Replace with actual URL
-                testimonial: "As a senior resident, I've witnessed how this programme prepares us to be future leaders in preventive medicine. The research opportunities have been exceptional, allowing me to contribute to evidence-based policy making. My rotations through SAF and various community health settings have shown me the breadth of preventive medicine applications. The programme's emphasis on both traditional public health and emerging areas like digital health has positioned me well for the evolving healthcare landscape."
-            },
-            {
-                name: "Dr. James Lim",
-                year: "PGY-2",
-                photo: "https://github.com/username/repo/raw/main/resident4.jpg", // Replace with actual URL
-                testimonial: "The structured yet flexible approach of this residency allows us to tailor our learning to our interests. I've been particularly impressed by the quality of teaching and the real-world applications of our training. Working on outbreak investigations and health promotion campaigns has shown me the immediate impact of preventive medicine. The supportive community of residents and faculty creates an environment where we can truly excel and make meaningful contributions to Singapore's health system."
-            }
+        },
+		{
+            name: "Dr. Sean Lim",
+            year: "2024 cohort",
+            photo: "https://nicholashbh.github.io/brochure/testimonials/sean_lim.png", // Replace with actual URL
+            testimonial: `Since my early days in medical school, I viewed healthcare from a macro lens. While my peers were deciding between medical vs surgical inclinations, I was drawn to healthcare at a systems level, curious about how policies, structures, and social determinants shape health far beyond the clinic walls. During my surgical rotations, I was struck by the endless stream of patients with gangrenous limbs and amputations, often the result of years of poorly controlled diabetes. As I traced their journeys upstream, I saw the challenges primary care providers faced: managing complex chronic conditions within the limits of a short consultation. That is when I realized that healthcare makes up only 20% of a person’s lifetime health. The other 80% unfolds long before a patient ever steps into a clinic.
+
+As part of my postgraduate training, I pursued a Master of Public Health at Columbia University in New York City. That unforgettable experience broadened my global perspective sand deepened my understanding of health systems and policy. The peers and mentors I met continue to shape the way I think and frame my ideas.
+
+Currently, I am posted to the Ministry of Health where I am involved in many policies involving the rollout and implementation of HealthierSG on a national level. 
+
+Clinical medicine changes lives one by one. Public health shifts the ground beneath thousands.`
+        },
+        {
+            name: "Dr. Yin Zhien",
+            year: "2022 cohort",
+            photo: "https://nicholashbh.github.io/brochure/testimonials/yin_zhien.png", // Replace with actual URL
+            testimonial: `The preventive medicine residency offers me a unique opportunity to contribute meaningfully to policy and systemic change through hands-on involvement in diverse projects across rotations. From evaluating service models in hospitals to influencing national programme direction, the residency provides me the opportunity to work across healthcare settings and populations. Each project brings the chance to shape real-world interventions, redesign systems, and improve care for different communities through implementation strategies, policy briefs, and data-driven recommendations.
+
+Beyond clinical knowledge, the programme stretches my thinking through exposure to public health, health services planning, and systems-level decision-making. I need to learn and apply contextual thinking, stakeholder engagement, and question assumptions in policy or programme design. The residency programme empowered me to bridge policy and practice.`
+        },
+		{
+			name: "Dr. Leonara Liu",
+			year: "2018 cohort",
+			photo: "https://nicholashbh.github.io/brochure/testimonials/leonara_liu.png",
+			testimonial: `I chose to join the National Preventive Medicine Residency (NPMR) Programme as I wanted to work at the systems level, to effect change that would benefit the health of communities and populations. To me, health goes beyond healthcare. Equally as important as the medical treatment of the sick are the preventative efforts to address the biological, social and environmental determinants of health.
+		
+Through a mandatory Master of Public Health (MPH) in junior residency, NPMR residents acquire essential knowledge in epidemiology, biostatistics and health behaviour change, among other areas. My rotations through public healthcare clusters and public health agencies (e.g. Ministry of Health) have allowed me to leverage on my experience in clinical medicine and apply public health principles learnt during my MPH to shape and operationalise healthcare policies.
+
+By working with a wide range of stakeholders including senior management, policy-makers, clinicians and researchers, the programme has also given me myriad opportunities to hone my collaboration and communication skills. For example, during my time in the Ministry of Health, I facilitated discussions between politicians, clinicians and representatives from the Ministry of Social and Family Development, to develop pilot programmes integrating upstream and downstream health and social care for Persons with Disabilities.
+
+Part of what makes Preventive Medicine (i.e. Public Health and Occupational Medicine) exciting to me is how broad the field is. Since rotations are tailored to each individual resident's interests, this translates into a heterogeneity of experiences among residents. This diversity among residents creates an environment that promotes an interdisciplinary approach to learning and problem-solving, and has trained me to consider each public health issue from different perspectives.`
+		},
+		
         ];
         
         // Photo Gallery Data - Easy to Edit (just add/remove objects)
         const galleryImages = [
             {
-                url: "https://xavierchee.github.io/brochure/photo_album/1.png", // Replace with actual URL
+                url: "https://nicholashbh.github.io/brochure/photo_album/1.png", // Replace with actual URL
                 caption: ""
             },
             {
-                url: "https://xavierchee.github.io/brochure/photo_album/2.png",
+                url: "https://nicholashbh.github.io/brochure/photo_album/2.png",
                 caption: ""
             },
             {
-                url: "https://xavierchee.github.io/brochure/photo_album/3.png",
+                url: "https://nicholashbh.github.io/brochure/photo_album/3.png",
                 caption: ""
             },
             {
-                url: "https://xavierchee.github.io/brochure/photo_album/4.png",
+                url: "https://nicholashbh.github.io/brochure/photo_album/4.png",
                 caption: ""
             },
             {
-                url: "https://xavierchee.github.io/brochure/photo_album/5.png",
+                url: "https://nicholashbh.github.io/brochure/photo_album/5.png",
                 caption: ""
             },
             {
-                url: "https://xavierchee.github.io/brochure/photo_album/6.png",
+                url: "https://nicholashbh.github.io/brochure/photo_album/6.png",
                 caption: ""
             },
             {
-                url: "https://xavierchee.github.io/brochure/photo_album/7.png",
+                url: "https://nicholashbh.github.io/brochure/photo_album/7.png",
                 caption: ""
             },
             {
-                url: "https://xavierchee.github.io/brochure/photo_album/8.png",
+                url: "https://nicholashbh.github.io/brochure/photo_album/8.png",
                 caption: ""
             },
 			{
-                url: "https://xavierchee.github.io/brochure/photo_album/9.png",
+                url: "https://nicholashbh.github.io/brochure/photo_album/9.png",
                 caption: ""
             },
 			{
-                url: "https://xavierchee.github.io/brochure/photo_album/10.png",
+                url: "https://nicholashbh.github.io/brochure/photo_album/10.png",
                 caption: ""
             },
 			{
-                url: "https://xavierchee.github.io/brochure/photo_album/11.png",
+                url: "https://nicholashbh.github.io/brochure/photo_album/11.png",
                 caption: ""
             }
         ];
@@ -4072,5 +4206,7 @@ I'm excited about the variety of roles available in preventive medicine and feel
         updateTestimonialPosition();
         updateGalleryPosition();
     </script>
+    <!-- Gallery Autoscroll Enhancement Script -->
+    <script src="gallery_autoscroll.js"></script>
 </body>
 </html>
