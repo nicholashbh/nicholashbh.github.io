@@ -12,13 +12,13 @@
     ============================================
     DOCUMENTATION - LATEST CHANGES
     ============================================
-    January 2025 - Mobile Timeline Content Fix:
-    - Fixed bullet points being cut off on mobile in Junior/Senior Residency cards
-    - Reduced left padding: 0.8rem 1rem 0.8rem 1.8rem (was padding-left: 3rem)
-    - Adjusted bullet position: left 0.6rem (was 1.2rem)
-    - Optimized font size to 0.9rem for better mobile readability
-    - Added specific mobile styles for timeline list items and bullets
-    - Lines modified: Mobile media query section (~line 3380-3400)
+    January 2025 - Mobile Testimonial Quote Fix:
+    - Fixed large gap between quotation mark and testimonial text on mobile
+    - Reduced quote mark left position: -0.3rem (was -0.8rem)
+    - Made quote mark smaller: 1.5rem (was 2rem)
+    - Reduced testimonial content padding-left to 0.5rem
+    - Better mobile readability with tighter spacing
+    - Lines modified: Mobile media query section (~line 3460-3480)
     -->
     
     <style>
@@ -3473,13 +3473,13 @@
                 text-align: center;
             }
             
-            /* Fix quote mark spacing on mobile */
+            /* Fix quote mark spacing on mobile - bring closer to text */
             .testimonial-content::before {
                 content: '"';
                 position: absolute;
-                left: -0.8rem;  /* Reduced from -1.5rem */
-                top: -0.5rem;   /* Moved up from -1rem */
-                font-size: 2rem;  /* Reduced from 4rem */
+                left: -0.3rem;  /* Much closer to text */
+                top: -0.8rem;   /* Slightly higher */
+                font-size: 1.5rem;  /* Smaller for mobile */
                 color: var(--accent-cyan);
                 opacity: 0.3;
                 font-family: Georgia, serif;
@@ -3503,6 +3503,12 @@
             
             .testimonial-content-section {
                 padding: 2rem 1.5rem;
+            }
+            
+            /* Reduce padding on quote section for mobile */
+            .director-quote-section,
+            .testimonial-content {
+                padding-left: 0.5rem;  /* Minimal padding */
             }
             
             .testimonial-text {
