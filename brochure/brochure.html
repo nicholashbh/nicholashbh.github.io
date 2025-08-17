@@ -10,17 +10,14 @@
     
     <!-- 
     ============================================
-    MOBILE MENU - MODERN PROFESSIONAL UPDATE
+    DOCUMENTATION - LATEST CHANGES
     ============================================
-    Changes made (January 2025):
-    1. Removed grey overlay background completely
-    2. Clean white menu panel with subtle shadow
-    3. Professional typography with better spacing
-    4. Smooth stagger animations for menu items
-    5. Modern accent indicators on hover
-    6. Added 'MENU' header label
-    7. Simplified transitions without scale effects
-    Lines modified: Mobile navigation styles (~line 3000-3150)
+    January 2025 - Mobile Testimonial Quote Fix:
+    - Fixed large gap between quote mark and testimonial text on mobile
+    - Added mobile-specific CSS for .testimonial-content::before
+    - Reduced quote size from 4rem to 2rem on mobile
+    - Adjusted positioning: left -0.8rem, top -0.5rem
+    - Lines modified: Mobile media query section (~line 3470)
     -->
     
     <style>
@@ -3366,12 +3363,18 @@
             }
             
             .timeline-year {
-                font-size: 0.85rem;
+                font-size: 0.8rem;
+                margin-bottom: 0.5rem; /* Add space below year text */
             }
             
             .timeline-header {
                 padding: 1.5rem;
-                padding-bottom: 3.5rem;
+                padding-bottom: 4rem; /* Increased to ensure space for expand button */
+            }
+            
+            /* Adjust expand icon position on mobile */
+            .timeline-content:not(.active) .expand-icon {
+                bottom: 0.8rem; /* Slightly higher position */
             }
             
             .timeline-body {
@@ -3452,6 +3455,18 @@
                 font-size: 1.5rem;
                 margin-bottom: 1.5rem;
                 text-align: center;
+            }
+            
+            /* Fix quote mark spacing on mobile */
+            .testimonial-content::before {
+                content: '"';
+                position: absolute;
+                left: -0.8rem;  /* Reduced from -1.5rem */
+                top: -0.5rem;   /* Moved up from -1rem */
+                font-size: 2rem;  /* Reduced from 4rem */
+                color: var(--accent-cyan);
+                opacity: 0.3;
+                font-family: Georgia, serif;
             }
             
             .testimonial-card {
