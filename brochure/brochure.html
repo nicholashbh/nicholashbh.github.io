@@ -8,6 +8,20 @@
     <!-- Google Fonts - Inter font family -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     
+    <!-- 
+    ============================================
+    MOBILE MENU ENHANCEMENT - DECEMBER 2024
+    ============================================
+    Changes made to improve mobile hamburger menu:
+    1. Added glassmorphism effect with backdrop blur
+    2. Enhanced slide-in animation with scale transform
+    3. Gradient background matching NUHS brand
+    4. Improved menu item styling with hover states
+    5. Better overlay with fade animation
+    6. Smooth cubic-bezier transitions
+    Lines modified: 476-524 (mobile nav styles)
+    -->
+    
     <style>
         /* =========================================== */
         /* ROOT VARIABLES & CSS RESET                  */
@@ -2986,53 +3000,138 @@
                 display: flex;
             }
             
-            /* Mobile navigation menu */
+            /* Mobile navigation menu - Enhanced with glassmorphism */
             .nav-links {
                 position: fixed;
                 top: 0;
                 right: -100%;
-                width: 80%;
-                max-width: 300px;
+                width: 85%;
+                max-width: 320px;
                 height: 100vh;
-                background: var(--white);
+                background: linear-gradient(135deg, 
+                    rgba(255, 255, 255, 0.95) 0%,
+                    rgba(240, 248, 255, 0.98) 50%,
+                    rgba(255, 255, 255, 0.95) 100%);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
                 flex-direction: column;
-                padding: 5rem 2rem 2rem;
-                gap: 1.5rem;
-                box-shadow: -5px 0 20px rgba(0, 0, 0, 0.1);
-                transition: right 0.3s ease;
+                padding: 5rem 0 2rem;
+                gap: 0;
+                box-shadow: 
+                    -10px 0 40px rgba(0, 61, 130, 0.15),
+                    -5px 0 20px rgba(0, 0, 0, 0.1),
+                    inset 1px 0 0 rgba(255, 255, 255, 0.5);
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                transform: translateX(100%) scale(0.95);
+                transform-origin: right center;
                 z-index: 999;
                 overflow-y: auto;
             }
             
-            /* Mobile menu overlay */
+            /* Mobile menu overlay with animation */
             .nav-links::before {
                 content: '';
                 position: fixed;
                 top: 0;
-                left: -100vw;
+                left: 0;
                 width: 100vw;
                 height: 100vh;
-                background: rgba(0, 0, 0, 0.5);
+                background: linear-gradient(135deg,
+                    rgba(0, 61, 130, 0.4) 0%,
+                    rgba(0, 0, 0, 0.6) 100%);
                 opacity: 0;
-                transition: opacity 0.3s ease;
+                visibility: hidden;
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
                 pointer-events: none;
+                backdrop-filter: blur(2px);
+                -webkit-backdrop-filter: blur(2px);
             }
             
-            /* Active mobile menu */
+            /* Active mobile menu with smooth animation */
             .nav-links.active {
                 right: 0;
+                transform: translateX(0) scale(1);
             }
             
             .nav-links.active::before {
-                left: 0;
                 opacity: 1;
+                visibility: visible;
                 pointer-events: all;
             }
             
+            /* Enhanced menu items styling */
             .nav-links a {
                 font-size: 1.1rem;
-                padding: 0.75rem 0;
-                border-bottom: 1px solid var(--medium-gray);
+                padding: 1.2rem 2rem;
+                margin: 0;
+                border: none;
+                position: relative;
+                color: var(--primary-navy);
+                font-weight: 500;
+                letter-spacing: 0.02em;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                display: flex;
+                align-items: center;
+                background: transparent;
+            }
+            
+            /* Subtle divider between menu items */
+            .nav-links li:not(:last-child)::after {
+                content: '';
+                display: block;
+                height: 1px;
+                background: linear-gradient(90deg, 
+                    transparent 0%, 
+                    rgba(0, 61, 130, 0.1) 20%,
+                    rgba(0, 61, 130, 0.1) 80%,
+                    transparent 100%);
+                margin: 0 2rem;
+            }
+            
+            /* Menu item hover effect */
+            .nav-links a::before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 4px;
+                height: 100%;
+                background: var(--gradient-accent);
+                transform: scaleY(0);
+                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                transform-origin: bottom;
+            }
+            
+            .nav-links a:hover {
+                background: rgba(0, 180, 216, 0.05);
+                padding-left: 2.5rem;
+                color: var(--accent-cyan);
+            }
+            
+            .nav-links a:hover::before {
+                transform: scaleY(1);
+            }
+            
+            /* Add subtle entrance animation for menu items */
+            .nav-links.active a {
+                animation: slideInRight 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+                opacity: 0;
+            }
+            
+            .nav-links.active li:nth-child(1) a { animation-delay: 0.1s; }
+            .nav-links.active li:nth-child(2) a { animation-delay: 0.15s; }
+            .nav-links.active li:nth-child(3) a { animation-delay: 0.2s; }
+            .nav-links.active li:nth-child(4) a { animation-delay: 0.25s; }
+            
+            @keyframes slideInRight {
+                from {
+                    opacity: 0;
+                    transform: translateX(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
             }
             
             /* Logo adjustments */
