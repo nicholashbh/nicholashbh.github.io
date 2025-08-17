@@ -10,16 +10,17 @@
     
     <!-- 
     ============================================
-    MOBILE MENU ENHANCEMENT - DECEMBER 2024
+    MOBILE MENU - MODERN PROFESSIONAL UPDATE
     ============================================
-    Changes made to improve mobile hamburger menu:
-    1. Added glassmorphism effect with backdrop blur
-    2. Enhanced slide-in animation with scale transform
-    3. Gradient background matching NUHS brand
-    4. Improved menu item styling with hover states
-    5. Better overlay with fade animation
-    6. Smooth cubic-bezier transitions
-    Lines modified: 476-524 (mobile nav styles)
+    Changes made (January 2025):
+    1. Removed grey overlay background completely
+    2. Clean white menu panel with subtle shadow
+    3. Professional typography with better spacing
+    4. Smooth stagger animations for menu items
+    5. Modern accent indicators on hover
+    6. Added 'MENU' header label
+    7. Simplified transitions without scale effects
+    Lines modified: Mobile navigation styles (~line 3000-3150)
     -->
     
     <style>
@@ -151,7 +152,7 @@
         }
         
         .hamburger.active span:nth-child(3) {
-            transform: translateY(-8px) rotate(-45deg);
+            transform: translateY(-13px) rotate(-45deg);
         }
         
         /* Navigation links */
@@ -3000,134 +3001,155 @@
                 display: flex;
             }
             
-            /* Mobile navigation menu - Enhanced with glassmorphism */
+            /* Mobile navigation menu - Modern Professional Design */
             .nav-links {
-                position: fixed;
-                top: 0;
-                right: -100%;
-                width: 85%;
-                max-width: 320px;
-                height: 100vh;
-                background: rgba(255, 255, 255, 0.98);
-                backdrop-filter: blur(20px);
-                -webkit-backdrop-filter: blur(20px);
-                flex-direction: column;
-                padding: 5rem 0 2rem;
-                gap: 0;
-                box-shadow: 
-                    -10px 0 40px rgba(0, 61, 130, 0.15),
-                    -5px 0 20px rgba(0, 0, 0, 0.1),
-                    inset 1px 0 0 rgba(255, 255, 255, 0.5);
-                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-                transform: translateX(100%) scale(0.95);
-                transform-origin: right center;
-                z-index: 999;
-                overflow-y: auto;
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 75%;
+            max-width: 280px;
+            height: 100vh;
+            background: #ffffff;
+            flex-direction: column;
+            padding: 6rem 0 2rem;
+            gap: 0;
+            box-shadow: 
+                -20px 0 60px rgba(0, 61, 130, 0.08),
+                -10px 0 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform: translateX(100%);
+            z-index: 999;
+            overflow-y: auto;
             }
             
-            /* Mobile menu overlay with animation */
+            /* Remove overlay - no grey background */
             .nav-links::before {
-                content: '';
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100vw;
-                height: 100vh;
-                background: rgba(0, 0, 0, 0.3);
-                opacity: 0;
-                visibility: hidden;
-                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-                pointer-events: none;
-                backdrop-filter: blur(2px);
-                -webkit-backdrop-filter: blur(2px);
+                display: none;
             }
             
-            /* Active mobile menu with smooth animation */
+            /* Active mobile menu with smooth slide */
             .nav-links.active {
-                right: 0;
-                transform: translateX(0) scale(1);
+            right: 0;
+            transform: translateX(0);
             }
             
-            .nav-links.active::before {
-                opacity: 1;
-                visibility: visible;
-                pointer-events: all;
-            }
-            
-            /* Enhanced menu items styling */
+            /* Modern Professional Menu Items */
             .nav-links a {
-                font-size: 1.1rem;
-                padding: 1.2rem 2rem;
-                margin: 0;
-                border: none;
-                position: relative;
-                color: var(--primary-navy);
-                font-weight: 500;
-                letter-spacing: 0.02em;
-                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                display: flex;
-                align-items: center;
-                background: transparent;
+            font-size: 1.15rem;
+            padding: 1.5rem 2.5rem;
+            margin: 0;
+            border: none;
+            position: relative;
+            color: var(--primary-navy);
+            font-weight: 600;
+            letter-spacing: 0.01em;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            background: transparent;
+                border-left: 3px solid transparent;
             }
             
-            /* Subtle divider between menu items */
+            /* Clean divider lines */
+            .nav-links li {
+            position: relative;
+            }
+            
             .nav-links li:not(:last-child)::after {
-                content: '';
-                display: block;
-                height: 1px;
-                background: linear-gradient(90deg, 
-                    transparent 0%, 
-                    rgba(0, 61, 130, 0.1) 20%,
-                    rgba(0, 61, 130, 0.1) 80%,
-                    transparent 100%);
-                margin: 0 2rem;
+            content: '';
+            display: block;
+            height: 1px;
+            background: #f0f0f0;
+                margin: 0;
             }
             
-            /* Menu item hover effect */
-            .nav-links a::before {
-                content: '';
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 4px;
-                height: 100%;
-                background: var(--gradient-accent);
-                transform: scaleY(0);
-                transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-                transform-origin: bottom;
+            /* Accent indicator on hover and active */
+            .nav-links a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 0;
+            background: var(--accent-cyan);
+            transition: height 0.3s ease;
             }
             
             .nav-links a:hover {
-                background: rgba(0, 180, 216, 0.05);
-                padding-left: 2.5rem;
-                color: var(--accent-cyan);
+            background: linear-gradient(90deg, rgba(0, 180, 216, 0.08) 0%, transparent 100%);
+            color: var(--accent-cyan);
+            padding-left: 3rem;
+                border-left-color: var(--accent-cyan);
             }
             
-            .nav-links a:hover::before {
-                transform: scaleY(1);
+            .nav-links a:hover::after {
+                height: 60%;
+        }
+        
+        /* Add menu header */
+        .nav-links::after {
+            content: 'MENU';
+            position: absolute;
+            top: 2rem;
+            left: 2.5rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            color: var(--primary-navy);
+            opacity: 0.5;
+        }
+            
+            /* Professional stagger animation for menu items */
+            .nav-links a {
+            opacity: 0;
+            transform: translateX(30px);
             }
             
-            /* Add subtle entrance animation for menu items */
             .nav-links.active a {
-                animation: slideInRight 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-                opacity: 0;
+                animation: slideInFromRight 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
             }
             
-            .nav-links.active li:nth-child(1) a { animation-delay: 0.1s; }
-            .nav-links.active li:nth-child(2) a { animation-delay: 0.15s; }
-            .nav-links.active li:nth-child(3) a { animation-delay: 0.2s; }
-            .nav-links.active li:nth-child(4) a { animation-delay: 0.25s; }
+            .nav-links.active li:nth-child(1) a { animation-delay: 0.05s; }
+            .nav-links.active li:nth-child(2) a { animation-delay: 0.1s; }
+            .nav-links.active li:nth-child(3) a { animation-delay: 0.15s; }
+            .nav-links.active li:nth-child(4) a { animation-delay: 0.2s; }
             
-            @keyframes slideInRight {
-                from {
-                    opacity: 0;
-                    transform: translateX(20px);
-                }
+            @keyframes slideInFromRight {
+            from {
+            opacity: 0;
+            transform: translateX(30px);
+            }
                 to {
-                    opacity: 1;
-                    transform: translateX(0);
-                }
+                opacity: 1;
+                transform: translateX(0);
             }
+        }
+        
+        /* Add close button inside menu */
+        .nav-links .menu-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            width: 32px;
+            height: 32px;
+            background: transparent;
+            border: 2px solid var(--primary-navy);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0.5;
+        }
+        
+        .nav-links .menu-close:hover {
+            opacity: 1;
+            transform: rotate(90deg);
+            background: var(--primary-navy);
+            color: white;
+        }
             
             /* Logo adjustments */
             .header-logo-img {
