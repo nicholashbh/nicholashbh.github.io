@@ -12,12 +12,13 @@
     ============================================
     DOCUMENTATION - LATEST CHANGES
     ============================================
-    January 2025 - Mobile Testimonial Quote Fix:
-    - Fixed large gap between quote mark and testimonial text on mobile
-    - Added mobile-specific CSS for .testimonial-content::before
-    - Reduced quote size from 4rem to 2rem on mobile
-    - Adjusted positioning: left -0.8rem, top -0.5rem
-    - Lines modified: Mobile media query section (~line 3470)
+    January 2025 - Mobile Timeline Content Fix:
+    - Fixed bullet points being cut off on mobile in Junior/Senior Residency cards
+    - Reduced left padding: 0.8rem 1rem 0.8rem 1.8rem (was padding-left: 3rem)
+    - Adjusted bullet position: left 0.6rem (was 1.2rem)
+    - Optimized font size to 0.9rem for better mobile readability
+    - Added specific mobile styles for timeline list items and bullets
+    - Lines modified: Mobile media query section (~line 3380-3400)
     -->
     
     <style>
@@ -3381,9 +3382,24 @@
                 padding: 0 1.5rem 1.5rem;
             }
             
+            /* Fixed mobile timeline list items - prevents cutoff */
             .timeline-content li {
-                padding: 1rem;
-                font-size: 0.95rem;
+                padding: 0.8rem 1rem 0.8rem 1.8rem; /* Reduced left padding from 3rem */
+                font-size: 0.9rem; /* Slightly smaller for better fit */
+                margin-bottom: 0.6rem; /* Reduced spacing */
+            }
+            
+            /* Adjusted bullet points for mobile */
+            .timeline-content li::before {
+                left: 0.6rem; /* Moved closer to edge from 1.2rem */
+                width: 6px; /* Smaller bullet */
+                height: 6px;
+            }
+            
+            .timeline-content li:hover::before {
+                width: 8px; /* Smaller hover state */
+                height: 8px;
+                left: 0.5rem; /* Adjust hover position */
             }
             
             /* Tabs mobile */
