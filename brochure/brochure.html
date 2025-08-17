@@ -12,15 +12,13 @@
     ============================================
     DOCUMENTATION - LATEST CHANGES
     ============================================
-    January 2025 - Gallery Carousel Infinite Loop Fix:
-    - Removed conflicting dual carousel control systems
-    - Implemented clean InfiniteGalleryCarousel class
-    - Added proper clone-based infinite loop (clones first/last 3 images)
-    - Fixed autoscroll with 3-second intervals
-    - Added hover pause and user interaction handling
-    - Buttons always enabled for seamless navigation
-    - Smooth transitions with no visible jumps
-    - Lines modified: Replaced lines ~2980-3390 with new unified system (~lines 5044-5280)
+    January 2025 - Mobile Testimonial Quote Fix:
+    - Fixed large gap between quotation mark and testimonial text on mobile
+    - Reduced quote mark left position: -0.3rem (was -0.8rem)
+    - Made quote mark smaller: 1.5rem (was 2rem)
+    - Reduced testimonial content padding-left to 0.5rem
+    - Better mobile readability with tighter spacing
+    - Lines modified: Mobile media query section (~line 3460-3480)
     -->
     
     <style>
@@ -5044,235 +5042,97 @@ Part of what makes Preventive Medicine (i.e. Public Health and Occupational Medi
             }
         }
         
-        // Initialize Infinite Loop Gallery with Autoscroll
-        class InfiniteGalleryCarousel {
-            constructor() {
-                this.wrapper = document.getElementById('galleryWrapper');
-                this.images = galleryImages;
-                this.currentIndex = 0;
-                this.itemsPerView = window.innerWidth <= 767 ? 1 : 3;
-                this.isTransitioning = false;
-                this.autoScrollInterval = null;
-                this.isHovered = false;
-                this.userInteractionTimeout = null;
-                
-                this.init();
+        // Initialize gallery
+        let currentGalleryPosition = 0;
+        const galleryWrapper = document.getElementById('galleryWrapper');
+        const itemsPerView = 3;
+        const maxPosition = Math.max(0, galleryImages.length - itemsPerView);
+        
+        // Generate gallery items
+        galleryImages.forEach((image, index) => {
+            const item = document.createElement('div');
+            item.className = 'gallery-item';
+            item.innerHTML = `
+                <img src="${image.url}" alt="Gallery image ${index + 1}" 
+                     onerror="this.src='https://via.placeholder.com/600x400/003D82/FFFFFF?text=Photo+${index + 1}'">
+                <div class="gallery-overlay">
+                    <p class="gallery-caption">${image.caption}</p>
+                </div>
+            `;
+            item.addEventListener('click', () => openLightbox(index));
+            galleryWrapper.appendChild(item);
+        });
+        
+        // Gallery navigation functions
+		function updateGalleryPosition() {
+			// Adjust items per view for mobile
+			const actualItemsPerView = window.innerWidth <= 767 ? 1 : itemsPerView;
+			const actualMaxPosition = Math.max(0, galleryImages.length - actualItemsPerView);
+			
+			const translateX = -(currentGalleryPosition * (100 / actualItemsPerView));
+			galleryWrapper.style.transform = `translateX(${translateX}%)`;
+    
+			// Update button states - use disabled attribute instead of hiding
+			const prevButton = document.getElementById('galleryPrev');
+			const nextButton = document.getElementById('galleryNext');
+    
+			prevButton.disabled = currentGalleryPosition === 0;
+			nextButton.disabled = currentGalleryPosition >= actualMaxPosition;
+		}
+        
+        // Gallery button controls
+        document.getElementById('galleryPrev').addEventListener('click', () => {
+            if (currentGalleryPosition > 0) {
+                currentGalleryPosition--;
+                updateGalleryPosition();
             }
-            
-            init() {
-                // Generate gallery items (original + clones for infinite loop)
-                this.setupGalleryItems();
-                this.setupEventListeners();
-                this.startAutoScroll();
-                this.updatePosition(false);
+        });
+        
+        document.getElementById('galleryNext').addEventListener('click', () => {
+            const actualItemsPerView = window.innerWidth <= 767 ? 1 : itemsPerView;
+            const actualMaxPosition = Math.max(0, galleryImages.length - actualItemsPerView);
+            if (currentGalleryPosition < actualMaxPosition) {
+                currentGalleryPosition++;
+                updateGalleryPosition();
             }
+        });
+        
+        // Touch support for gallery
+        let galleryTouchStartX = 0;
+        let galleryTouchEndX = 0;
+        
+        galleryWrapper.addEventListener('touchstart', (e) => {
+            galleryTouchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+        
+        galleryWrapper.addEventListener('touchend', (e) => {
+            galleryTouchEndX = e.changedTouches[0].screenX;
+            handleGallerySwipe();
+        }, { passive: true });
+        
+        function handleGallerySwipe() {
+            const swipeThreshold = 50;
+            const diff = galleryTouchStartX - galleryTouchEndX;
+            const actualItemsPerView = window.innerWidth <= 767 ? 1 : itemsPerView;
+            const actualMaxPosition = Math.max(0, galleryImages.length - actualItemsPerView);
             
-            setupGalleryItems() {
-                // Clear existing items
-                this.wrapper.innerHTML = '';
-                
-                // For infinite loop, clone last set and first set
-                const itemsToClone = this.itemsPerView;
-                
-                // Clone last items and add at beginning
-                for (let i = this.images.length - itemsToClone; i < this.images.length; i++) {
-                    this.createGalleryItem(this.images[i], i, true);
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0 && currentGalleryPosition < actualMaxPosition) {
+                    // Swipe left - next image
+                    currentGalleryPosition++;
+                    updateGalleryPosition();
+                } else if (diff < 0 && currentGalleryPosition > 0) {
+                    // Swipe right - previous image
+                    currentGalleryPosition--;
+                    updateGalleryPosition();
                 }
-                
-                // Add original items
-                this.images.forEach((image, index) => {
-                    this.createGalleryItem(image, index, false);
-                });
-                
-                // Clone first items and add at end
-                for (let i = 0; i < itemsToClone; i++) {
-                    this.createGalleryItem(this.images[i], i, true);
-                }
-                
-                // Start at the first real image (after clones)
-                this.currentIndex = itemsToClone;
-            }
-            
-            createGalleryItem(image, index, isClone) {
-                const item = document.createElement('div');
-                item.className = 'gallery-item' + (isClone ? ' gallery-clone' : '');
-                item.innerHTML = `
-                    <img src="${image.url}" alt="Gallery image ${index + 1}" 
-                         onerror="this.src='https://via.placeholder.com/600x400/003D82/FFFFFF?text=Photo+${index + 1}'">
-                    <div class="gallery-overlay">
-                        <p class="gallery-caption">${image.caption}</p>
-                    </div>
-                `;
-                
-                // Only add lightbox for non-clones
-                if (!isClone) {
-                    item.addEventListener('click', () => openLightbox(index));
-                }
-                
-                this.wrapper.appendChild(item);
-            }
-            
-            updatePosition(animate = true) {
-                const translateX = -(this.currentIndex * (100 / (this.images.length + 2 * this.itemsPerView)));
-                
-                if (animate) {
-                    this.wrapper.style.transition = 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
-                } else {
-                    this.wrapper.style.transition = 'none';
-                }
-                
-                this.wrapper.style.transform = `translateX(${translateX}%)`;
-            }
-            
-            next() {
-                if (this.isTransitioning) return;
-                this.isTransitioning = true;
-                
-                this.currentIndex++;
-                this.updatePosition(true);
-                
-                // Check if we've reached the end clone
-                if (this.currentIndex >= this.images.length + this.itemsPerView) {
-                    setTimeout(() => {
-                        this.currentIndex = this.itemsPerView;
-                        this.updatePosition(false);
-                        this.isTransitioning = false;
-                    }, 500);
-                } else {
-                    setTimeout(() => {
-                        this.isTransitioning = false;
-                    }, 500);
-                }
-                
-                this.handleUserInteraction();
-            }
-            
-            prev() {
-                if (this.isTransitioning) return;
-                this.isTransitioning = true;
-                
-                this.currentIndex--;
-                this.updatePosition(true);
-                
-                // Check if we've reached the beginning clone
-                if (this.currentIndex < this.itemsPerView) {
-                    setTimeout(() => {
-                        this.currentIndex = this.images.length + this.itemsPerView - 1;
-                        this.updatePosition(false);
-                        this.isTransitioning = false;
-                    }, 500);
-                } else {
-                    setTimeout(() => {
-                        this.isTransitioning = false;
-                    }, 500);
-                }
-                
-                this.handleUserInteraction();
-            }
-            
-            startAutoScroll() {
-                if (!this.isHovered && !this.autoScrollInterval) {
-                    this.autoScrollInterval = setInterval(() => {
-                        this.next();
-                    }, 3000); // 3 seconds
-                }
-            }
-            
-            stopAutoScroll() {
-                if (this.autoScrollInterval) {
-                    clearInterval(this.autoScrollInterval);
-                    this.autoScrollInterval = null;
-                }
-            }
-            
-            handleUserInteraction() {
-                // Stop auto scroll on user interaction
-                this.stopAutoScroll();
-                
-                // Clear existing timeout
-                if (this.userInteractionTimeout) {
-                    clearTimeout(this.userInteractionTimeout);
-                }
-                
-                // Resume after 5 seconds of no interaction
-                this.userInteractionTimeout = setTimeout(() => {
-                    if (!this.isHovered) {
-                        this.startAutoScroll();
-                    }
-                }, 5000);
-            }
-            
-            setupEventListeners() {
-                // Navigation buttons
-                const prevBtn = document.getElementById('galleryPrev');
-                const nextBtn = document.getElementById('galleryNext');
-                
-                // Enable buttons for infinite loop
-                prevBtn.disabled = false;
-                nextBtn.disabled = false;
-                
-                prevBtn.addEventListener('click', () => this.prev());
-                nextBtn.addEventListener('click', () => this.next());
-                
-                // Hover pause
-                const carousel = document.querySelector('.gallery-carousel');
-                carousel.addEventListener('mouseenter', () => {
-                    this.isHovered = true;
-                    this.stopAutoScroll();
-                });
-                
-                carousel.addEventListener('mouseleave', () => {
-                    this.isHovered = false;
-                    this.startAutoScroll();
-                });
-                
-                // Touch support
-                let touchStartX = 0;
-                let touchEndX = 0;
-                
-                this.wrapper.addEventListener('touchstart', (e) => {
-                    touchStartX = e.changedTouches[0].screenX;
-                    this.stopAutoScroll();
-                }, { passive: true });
-                
-                this.wrapper.addEventListener('touchend', (e) => {
-                    touchEndX = e.changedTouches[0].screenX;
-                    const diff = touchStartX - touchEndX;
-                    
-                    if (Math.abs(diff) > 50) {
-                        if (diff > 0) {
-                            this.next();
-                        } else {
-                            this.prev();
-                        }
-                    }
-                    
-                    this.handleUserInteraction();
-                }, { passive: true });
-                
-                // Window resize
-                window.addEventListener('resize', () => {
-                    const newItemsPerView = window.innerWidth <= 767 ? 1 : 3;
-                    if (newItemsPerView !== this.itemsPerView) {
-                        this.itemsPerView = newItemsPerView;
-                        this.setupGalleryItems();
-                        this.updatePosition(false);
-                    }
-                });
-                
-                // Page visibility
-                document.addEventListener('visibilitychange', () => {
-                    if (document.hidden) {
-                        this.stopAutoScroll();
-                    } else if (!this.isHovered) {
-                        this.startAutoScroll();
-                    }
-                });
             }
         }
         
-        // Initialize the gallery carousel
-        const galleryCarousel = new InfiniteGalleryCarousel();
+        // Update gallery on window resize
+        window.addEventListener('resize', () => {
+            updateGalleryPosition();
+        });
         
         // Lightbox functionality
         const lightbox = document.getElementById('lightbox');
@@ -5310,6 +5170,233 @@ Part of what makes Preventive Medicine (i.e. Public Health and Occupational Medi
         
         // Initialize positions
         updateTestimonialPosition();
+        updateGalleryPosition();
+    </script>
+    
+    <!-- Gallery Autoscroll Enhancement Script (Embedded) -->
+    <script>
+    // Gallery Infinite Loop Autoscroll - Embedded Version
+    // Enhanced for GitHub Pages compatibility
+    (function() {
+        'use strict';
+        
+        // Use a more reliable load event
+        function initGalleryAutoscroll() {
+            // Find gallery elements with error checking
+            const galleryCarousel = document.querySelector('.gallery-carousel');
+            if (!galleryCarousel) {
+                console.warn('Gallery carousel not found');
+                return;
+            }
+            
+            const galleryWrapper = galleryCarousel.querySelector('.gallery-wrapper');
+            const galleryItems = galleryCarousel.querySelectorAll('.gallery-item');
+            const galleryPrevBtn = galleryCarousel.querySelector('.gallery-nav-prev') || document.getElementById('galleryPrev');
+            const galleryNextBtn = galleryCarousel.querySelector('.gallery-nav-next') || document.getElementById('galleryNext');
+            
+            if (!galleryWrapper || !galleryItems.length) {
+                console.warn('Gallery wrapper or items not found');
+                return;
+            }
+            
+            // Configuration
+            const itemsPerView = window.innerWidth <= 767 ? 1 : 3;
+            const totalOriginalItems = galleryItems.length;
+            let currentIndex = 0;
+            let isTransitioning = false;
+            let autoScrollInterval = null;
+            let isHovered = false;
+            const maxIndex = Math.max(0, totalOriginalItems - itemsPerView);
+            
+            // Function to update gallery position
+            function updateGalleryPosition(animate = true) {
+                const translateX = -(currentIndex * (100 / itemsPerView));
+                
+                if (animate) {
+                    galleryWrapper.style.transition = 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+                } else {
+                    galleryWrapper.style.transition = 'none';
+                }
+                
+                galleryWrapper.style.transform = `translateX(${translateX}%)`;
+            }
+            
+            // Smooth infinite loop function
+            function smoothInfiniteNext() {
+                if (isTransitioning) return;
+                isTransitioning = true;
+                
+                currentIndex++;
+                
+                // If we've gone past the last set, smoothly loop back
+                if (currentIndex > maxIndex) {
+                    // Animate to the "next" position
+                    updateGalleryPosition(true);
+                    
+                    // After animation, instantly reset to beginning
+                    setTimeout(() => {
+                        currentIndex = 0;
+                        updateGalleryPosition(false);
+                        isTransitioning = false;
+                    }, 500);
+                } else {
+                    updateGalleryPosition(true);
+                    setTimeout(() => {
+                        isTransitioning = false;
+                    }, 500);
+                }
+            }
+            
+            // Function to go to previous slide with infinite loop
+            function goToPrevSlide() {
+                if (isTransitioning) return;
+                isTransitioning = true;
+                
+                if (currentIndex <= 0) {
+                    // Jump to end instantly
+                    currentIndex = maxIndex + 1;
+                    updateGalleryPosition(false);
+                    
+                    // Then animate backwards
+                    setTimeout(() => {
+                        currentIndex = maxIndex;
+                        updateGalleryPosition(true);
+                        
+                        setTimeout(() => {
+                            isTransitioning = false;
+                        }, 500);
+                    }, 10);
+                } else {
+                    currentIndex--;
+                    updateGalleryPosition(true);
+                    
+                    setTimeout(() => {
+                        isTransitioning = false;
+                    }, 500);
+                }
+            }
+            
+            // Start autoscroll
+            function startAutoScroll() {
+                if (!isHovered && !autoScrollInterval) {
+                    autoScrollInterval = setInterval(() => {
+                        smoothInfiniteNext();
+                    }, 2000); // 2 seconds interval
+                }
+            }
+            
+            // Stop autoscroll
+            function stopAutoScroll() {
+                if (autoScrollInterval) {
+                    clearInterval(autoScrollInterval);
+                    autoScrollInterval = null;
+                }
+            }
+            
+            // Restart autoscroll
+            function restartAutoScroll() {
+                stopAutoScroll();
+                setTimeout(() => {
+                    startAutoScroll();
+                }, 100);
+            }
+            
+            // Override existing button event listeners
+            if (galleryPrevBtn) {
+                // Remove existing listeners by cloning
+                const newPrevBtn = galleryPrevBtn.cloneNode(true);
+                galleryPrevBtn.parentNode.replaceChild(newPrevBtn, galleryPrevBtn);
+                
+                // Enable for infinite loop
+                newPrevBtn.disabled = false;
+                newPrevBtn.style.opacity = '1';
+                newPrevBtn.style.cursor = 'pointer';
+                
+                newPrevBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    goToPrevSlide();
+                    restartAutoScroll();
+                });
+            }
+            
+            if (galleryNextBtn) {
+                // Remove existing listeners by cloning
+                const newNextBtn = galleryNextBtn.cloneNode(true);
+                galleryNextBtn.parentNode.replaceChild(newNextBtn, galleryNextBtn);
+                
+                // Enable for infinite loop
+                newNextBtn.disabled = false;
+                newNextBtn.style.opacity = '1';
+                newNextBtn.style.cursor = 'pointer';
+                
+                newNextBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    smoothInfiniteNext();
+                    restartAutoScroll();
+                });
+            }
+            
+            // Pause autoscroll on hover
+            galleryCarousel.addEventListener('mouseenter', () => {
+                isHovered = true;
+                stopAutoScroll();
+            });
+            
+            galleryCarousel.addEventListener('mouseleave', () => {
+                isHovered = false;
+                startAutoScroll();
+            });
+            
+            // Pause when page is not visible
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    stopAutoScroll();
+                } else if (!isHovered) {
+                    startAutoScroll();
+                }
+            });
+            
+            // Handle window resize
+            let resizeTimeout;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(() => {
+                    // Recalculate items per view
+                    const newItemsPerView = window.innerWidth <= 767 ? 1 : 3;
+                    if (currentIndex > Math.max(0, totalOriginalItems - newItemsPerView)) {
+                        currentIndex = 0;
+                    }
+                    updateGalleryPosition(false);
+                }, 250);
+            });
+            
+            // Initialize
+            currentIndex = 0;
+            updateGalleryPosition(false);
+            
+            // Start autoscroll
+            startAutoScroll();
+            
+            console.log('Gallery infinite loop autoscroll initialized (embedded version)');
+        }
+        
+        // Try multiple initialization strategies for better compatibility
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(initGalleryAutoscroll, 100);
+            });
+        } else {
+            // DOM is already loaded
+            setTimeout(initGalleryAutoscroll, 100);
+        }
+        
+        // Fallback: Also try on window load
+        window.addEventListener('load', () => {
+            setTimeout(initGalleryAutoscroll, 500);
+        });
+    })();
     </script>
 </body>
 </html>
