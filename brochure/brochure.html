@@ -3572,7 +3572,7 @@
             <ul class="nav-links" id="navLinks">
                 <li><a href="#about">About</a></li>
                 <li><a href="#structure">Programme</a></li>
-                <li><a href="#features">Curriculum</a></li>
+                <li><a href="#features">Competencies</a></li>
                 <li><a href="#life-programme">Testimonials</a></li>
             </ul>
             
@@ -4198,24 +4198,46 @@
         // Welcome Overlay Animation Control
         // =============================================
         
+        // Function to detect mobile devices
+        function isMobileDevice() {
+            // Check for touch capability and screen size
+            const hasTouchScreen = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+            const isSmallScreen = window.innerWidth <= 767;
+            
+            // Check user agent for mobile devices
+            const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+            const isMobileUserAgent = mobileRegex.test(navigator.userAgent);
+            
+            return (hasTouchScreen && isSmallScreen) || isMobileUserAgent;
+        }
+        
         // Get the welcome overlay element
         const welcomeOverlay = document.getElementById('welcomeOverlay');
         const skipButton = document.getElementById('skipButton');
         
-        // Skip button functionality
-        skipButton.addEventListener('click', function() {
-            // Immediately remove the overlay
-            welcomeOverlay.style.animation = 'overlayFadeOut 0.5s ease-out forwards';
+        // Check if mobile and skip overlay immediately
+        if (isMobileDevice()) {
+            // Hide overlay immediately on mobile
+            welcomeOverlay.style.display = 'none';
+            welcomeOverlay.style.visibility = 'hidden';
+            welcomeOverlay.style.opacity = '0';
+        } else {
+            // Desktop: normal behavior
+            // Skip button functionality
+            skipButton.addEventListener('click', function() {
+                // Immediately remove the overlay
+                welcomeOverlay.style.animation = 'overlayFadeOut 0.5s ease-out forwards';
+                
+                // Remove the overlay after animation completes
+                setTimeout(() => {
+                    welcomeOverlay.style.display = 'none';
+                }, 500);
+            });
             
-            // Remove the overlay after animation completes
-            setTimeout(() => {
-                welcomeOverlay.style.display = 'none';
-            }, 500);
-        });
-        
-        // Add fade-out class to trigger exit animation
-        // This happens automatically after the CSS animations complete
-        welcomeOverlay.classList.add('fade-out');
+            // Add fade-out class to trigger exit animation
+            // This happens automatically after the CSS animations complete
+            welcomeOverlay.classList.add('fade-out');
+        }
         
         
         // =============================================
