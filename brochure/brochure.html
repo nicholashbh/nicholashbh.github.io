@@ -13,12 +13,9 @@
     DOCUMENTATION - LATEST CHANGES
     ============================================
     January 2025 - Mobile Testimonial Quote Fix:
-    - Fixed large gap between quotation mark and testimonial text on mobile
-    - Reduced quote mark left position: -0.3rem (was -0.8rem)
-    - Made quote mark smaller: 1.5rem (was 2rem)
-    - Reduced testimonial content padding-left to 0.5rem
-    - Better mobile readability with tighter spacing
-    - Lines modified: Mobile media query section (~line 3460-3480)
+    - Fixed spacing issue between quotation mark and text on mobile
+    - Quote mark now positioned flush against text (left: 0)
+    - Reduced vertical offset for better alignment (top: -0.5rem)
     -->
     
     <style>
@@ -3477,8 +3474,8 @@
             .testimonial-content::before {
                 content: '"';
                 position: absolute;
-                left: -0.3rem;  /* Much closer to text */
-                top: -0.8rem;   /* Slightly higher */
+                left: 0;  /* Flush against text */
+                top: -0.5rem;   /* Slightly higher */
                 font-size: 1.5rem;  /* Smaller for mobile */
                 color: var(--accent-cyan);
                 opacity: 0.3;
@@ -5047,6 +5044,7 @@ Part of what makes Preventive Medicine (i.e. Public Health and Occupational Medi
         const galleryWrapper = document.getElementById('galleryWrapper');
         const itemsPerView = 3;
         const maxPosition = Math.max(0, galleryImages.length - itemsPerView);
+        let galleryAutoScroll; // Timer for auto-scrolling
         
         // Generate gallery items
         galleryImages.forEach((image, index) => {
@@ -5080,21 +5078,50 @@ Part of what makes Preventive Medicine (i.e. Public Health and Occupational Medi
 			nextButton.disabled = currentGalleryPosition >= actualMaxPosition;
 		}
         
+        // Auto-scroll functions for gallery
+        function startGalleryAutoScroll() {
+            galleryAutoScroll = setInterval(() => {
+                const actualItemsPerView = window.innerWidth <= 767 ? 1 : itemsPerView;
+                const actualMaxPosition = Math.max(0, galleryImages.length - actualItemsPerView);
+                
+                // If at the end, loop back to beginning
+                if (currentGalleryPosition >= actualMaxPosition) {
+                    currentGalleryPosition = 0;
+                } else {
+                    currentGalleryPosition++;
+                }
+                updateGalleryPosition();
+            }, 2000); // Change every 2 seconds
+        }
+        
+        function stopGalleryAutoScroll() {
+            if (galleryAutoScroll) {
+                clearInterval(galleryAutoScroll);
+                galleryAutoScroll = null;
+            }
+        }
+        
         // Gallery button controls
         document.getElementById('galleryPrev').addEventListener('click', () => {
+            stopGalleryAutoScroll(); // Stop auto-scroll on manual navigation
             if (currentGalleryPosition > 0) {
                 currentGalleryPosition--;
                 updateGalleryPosition();
             }
+            // Resume auto-scroll after a delay
+            setTimeout(() => startGalleryAutoScroll(), 3000);
         });
         
         document.getElementById('galleryNext').addEventListener('click', () => {
+            stopGalleryAutoScroll(); // Stop auto-scroll on manual navigation
             const actualItemsPerView = window.innerWidth <= 767 ? 1 : itemsPerView;
             const actualMaxPosition = Math.max(0, galleryImages.length - actualItemsPerView);
             if (currentGalleryPosition < actualMaxPosition) {
                 currentGalleryPosition++;
                 updateGalleryPosition();
             }
+            // Resume auto-scroll after a delay
+            setTimeout(() => startGalleryAutoScroll(), 3000);
         });
         
         // Touch support for gallery
@@ -5103,11 +5130,14 @@ Part of what makes Preventive Medicine (i.e. Public Health and Occupational Medi
         
         galleryWrapper.addEventListener('touchstart', (e) => {
             galleryTouchStartX = e.changedTouches[0].screenX;
+            stopGalleryAutoScroll(); // Stop auto-scroll on touch
         }, { passive: true });
         
         galleryWrapper.addEventListener('touchend', (e) => {
             galleryTouchEndX = e.changedTouches[0].screenX;
             handleGallerySwipe();
+            // Resume auto-scroll after touch interaction
+            setTimeout(() => startGalleryAutoScroll(), 3000);
         }, { passive: true });
         
         function handleGallerySwipe() {
@@ -5171,232 +5201,25 @@ Part of what makes Preventive Medicine (i.e. Public Health and Occupational Medi
         // Initialize positions
         updateTestimonialPosition();
         updateGalleryPosition();
-    </script>
-    
-    <!-- Gallery Autoscroll Enhancement Script (Embedded) -->
-    <script>
-    // Gallery Infinite Loop Autoscroll - Embedded Version
-    // Enhanced for GitHub Pages compatibility
-    (function() {
-        'use strict';
         
-        // Use a more reliable load event
-        function initGalleryAutoscroll() {
-            // Find gallery elements with error checking
-            const galleryCarousel = document.querySelector('.gallery-carousel');
-            if (!galleryCarousel) {
-                console.warn('Gallery carousel not found');
-                return;
-            }
-            
-            const galleryWrapper = galleryCarousel.querySelector('.gallery-wrapper');
-            const galleryItems = galleryCarousel.querySelectorAll('.gallery-item');
-            const galleryPrevBtn = galleryCarousel.querySelector('.gallery-nav-prev') || document.getElementById('galleryPrev');
-            const galleryNextBtn = galleryCarousel.querySelector('.gallery-nav-next') || document.getElementById('galleryNext');
-            
-            if (!galleryWrapper || !galleryItems.length) {
-                console.warn('Gallery wrapper or items not found');
-                return;
-            }
-            
-            // Configuration
-            const itemsPerView = window.innerWidth <= 767 ? 1 : 3;
-            const totalOriginalItems = galleryItems.length;
-            let currentIndex = 0;
-            let isTransitioning = false;
-            let autoScrollInterval = null;
-            let isHovered = false;
-            const maxIndex = Math.max(0, totalOriginalItems - itemsPerView);
-            
-            // Function to update gallery position
-            function updateGalleryPosition(animate = true) {
-                const translateX = -(currentIndex * (100 / itemsPerView));
-                
-                if (animate) {
-                    galleryWrapper.style.transition = 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
-                } else {
-                    galleryWrapper.style.transition = 'none';
-                }
-                
-                galleryWrapper.style.transform = `translateX(${translateX}%)`;
-            }
-            
-            // Smooth infinite loop function
-            function smoothInfiniteNext() {
-                if (isTransitioning) return;
-                isTransitioning = true;
-                
-                currentIndex++;
-                
-                // If we've gone past the last set, smoothly loop back
-                if (currentIndex > maxIndex) {
-                    // Animate to the "next" position
-                    updateGalleryPosition(true);
-                    
-                    // After animation, instantly reset to beginning
-                    setTimeout(() => {
-                        currentIndex = 0;
-                        updateGalleryPosition(false);
-                        isTransitioning = false;
-                    }, 500);
-                } else {
-                    updateGalleryPosition(true);
-                    setTimeout(() => {
-                        isTransitioning = false;
-                    }, 500);
-                }
-            }
-            
-            // Function to go to previous slide with infinite loop
-            function goToPrevSlide() {
-                if (isTransitioning) return;
-                isTransitioning = true;
-                
-                if (currentIndex <= 0) {
-                    // Jump to end instantly
-                    currentIndex = maxIndex + 1;
-                    updateGalleryPosition(false);
-                    
-                    // Then animate backwards
-                    setTimeout(() => {
-                        currentIndex = maxIndex;
-                        updateGalleryPosition(true);
-                        
-                        setTimeout(() => {
-                            isTransitioning = false;
-                        }, 500);
-                    }, 10);
-                } else {
-                    currentIndex--;
-                    updateGalleryPosition(true);
-                    
-                    setTimeout(() => {
-                        isTransitioning = false;
-                    }, 500);
-                }
-            }
-            
-            // Start autoscroll
-            function startAutoScroll() {
-                if (!isHovered && !autoScrollInterval) {
-                    autoScrollInterval = setInterval(() => {
-                        smoothInfiniteNext();
-                    }, 2000); // 2 seconds interval
-                }
-            }
-            
-            // Stop autoscroll
-            function stopAutoScroll() {
-                if (autoScrollInterval) {
-                    clearInterval(autoScrollInterval);
-                    autoScrollInterval = null;
-                }
-            }
-            
-            // Restart autoscroll
-            function restartAutoScroll() {
-                stopAutoScroll();
-                setTimeout(() => {
-                    startAutoScroll();
-                }, 100);
-            }
-            
-            // Override existing button event listeners
-            if (galleryPrevBtn) {
-                // Remove existing listeners by cloning
-                const newPrevBtn = galleryPrevBtn.cloneNode(true);
-                galleryPrevBtn.parentNode.replaceChild(newPrevBtn, galleryPrevBtn);
-                
-                // Enable for infinite loop
-                newPrevBtn.disabled = false;
-                newPrevBtn.style.opacity = '1';
-                newPrevBtn.style.cursor = 'pointer';
-                
-                newPrevBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    goToPrevSlide();
-                    restartAutoScroll();
-                });
-            }
-            
-            if (galleryNextBtn) {
-                // Remove existing listeners by cloning
-                const newNextBtn = galleryNextBtn.cloneNode(true);
-                galleryNextBtn.parentNode.replaceChild(newNextBtn, galleryNextBtn);
-                
-                // Enable for infinite loop
-                newNextBtn.disabled = false;
-                newNextBtn.style.opacity = '1';
-                newNextBtn.style.cursor = 'pointer';
-                
-                newNextBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    smoothInfiniteNext();
-                    restartAutoScroll();
-                });
-            }
-            
-            // Pause autoscroll on hover
-            galleryCarousel.addEventListener('mouseenter', () => {
-                isHovered = true;
-                stopAutoScroll();
-            });
-            
-            galleryCarousel.addEventListener('mouseleave', () => {
-                isHovered = false;
-                startAutoScroll();
-            });
-            
-            // Pause when page is not visible
-            document.addEventListener('visibilitychange', () => {
-                if (document.hidden) {
-                    stopAutoScroll();
-                } else if (!isHovered) {
-                    startAutoScroll();
-                }
-            });
-            
-            // Handle window resize
-            let resizeTimeout;
-            window.addEventListener('resize', () => {
-                clearTimeout(resizeTimeout);
-                resizeTimeout = setTimeout(() => {
-                    // Recalculate items per view
-                    const newItemsPerView = window.innerWidth <= 767 ? 1 : 3;
-                    if (currentIndex > Math.max(0, totalOriginalItems - newItemsPerView)) {
-                        currentIndex = 0;
-                    }
-                    updateGalleryPosition(false);
-                }, 250);
-            });
-            
-            // Initialize
-            currentIndex = 0;
-            updateGalleryPosition(false);
-            
-            // Start autoscroll
-            startAutoScroll();
-            
-            console.log('Gallery infinite loop autoscroll initialized (embedded version)');
-        }
+        // Start auto-scroll for gallery
+        startGalleryAutoScroll();
         
-        // Try multiple initialization strategies for better compatibility
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => {
-                setTimeout(initGalleryAutoscroll, 100);
-            });
-        } else {
-            // DOM is already loaded
-            setTimeout(initGalleryAutoscroll, 100);
-        }
+        // Pause gallery auto-scroll on hover
+        const galleryCarousel = document.querySelector('.gallery-carousel');
+        galleryCarousel.addEventListener('mouseenter', stopGalleryAutoScroll);
+        galleryCarousel.addEventListener('mouseleave', startGalleryAutoScroll);
         
-        // Fallback: Also try on window load
-        window.addEventListener('load', () => {
-            setTimeout(initGalleryAutoscroll, 500);
+        // Stop gallery auto-scroll when page is not visible
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                stopGalleryAutoScroll();
+                stopTestimonialRotation();
+            } else {
+                startGalleryAutoScroll();
+                startTestimonialRotation();
+            }
         });
-    })();
     </script>
 </body>
 </html>
