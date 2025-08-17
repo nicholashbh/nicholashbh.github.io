@@ -12,10 +12,11 @@
     ============================================
     DOCUMENTATION - LATEST CHANGES
     ============================================
-    January 2025 - Mobile Testimonial Quote Fix:
-    - Fixed spacing issue between quotation mark and text on mobile
-    - Quote mark now positioned flush against text (left: 0)
-    - Reduced vertical offset for better alignment (top: -0.5rem)
+    January 2025 - Lazy Loading Implementation:
+    - Added native lazy loading to all non-critical images
+    - Implemented Intersection Observer for dynamic content (testimonials/gallery)
+    - Stats section background image now loads on scroll
+    - Improved initial page load performance
     -->
     
     <style>
@@ -860,13 +861,15 @@
         /* =========================================== */
         
         .stats {
-            background-image: url('https://nicholashbh.github.io/brochure/banner_programme_at_a_glance.png');
+            /* Background image removed - will be lazy loaded via JS */
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             color: var(--white);
             position: relative;
             overflow: hidden;
+            /* Fallback background color while image loads */
+            background-color: var(--primary-navy);
         }
         
         /* Dark blue overlay for better text readability - matching hero section */
@@ -2043,7 +2046,7 @@
             flex: 1; /* Take available space */
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start;
         }
         
         /* Quote mark */
@@ -3809,6 +3812,7 @@
                         <div class="director-photo">
                             <img src="prof_jason_yap.png" 
                                  alt="A/Prof Jason Yap" 
+                                 loading="lazy"
                                  onerror="this.style.display='none'; this.parentElement.style.background='var(--gradient-accent)'">
                         </div>
                         <div class="director-details">
@@ -4788,6 +4792,42 @@
         
         
         // =============================================
+        // Lazy Loading Setup
+        // =============================================
+        
+        // Create Intersection Observer for lazy loading images
+        const lazyImageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    if (img.dataset.src) {
+                        img.src = img.dataset.src;
+                        img.removeAttribute('data-src');
+                        observer.unobserve(img);
+                    }
+                }
+            });
+        }, {
+            rootMargin: '50px' // Start loading 50px before visible
+        });
+        
+        // Lazy load stats section background
+        const statsSection = document.querySelector('.stats');
+        if (statsSection) {
+            const statsObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.backgroundImage = 
+                            "url('https://nicholashbh.github.io/brochure/banner_programme_at_a_glance.png')";
+                        statsObserver.unobserve(entry.target);
+                    }
+                });
+            }, { rootMargin: '100px' });
+            
+            statsObserver.observe(statsSection);
+        }
+        
+        // =============================================
         // Life in Our Programme - Data & Functionality
         // =============================================
         
@@ -4912,8 +4952,18 @@ Part of what makes Preventive Medicine (i.e. Public Health and Occupational Medi
             
             if (testimonial.photo) {
                 const img = document.createElement('img');
-                img.src = testimonial.photo;
+                // Use lazy loading for testimonial images
+                if (index === 0) {
+                    // Load first testimonial immediately
+                    img.src = testimonial.photo;
+                } else {
+                    // Lazy load other testimonials
+                    img.dataset.src = testimonial.photo;
+                    img.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400"%3E%3Crect fill="%23f0f0f0" width="300" height="400"/%3E%3C/svg%3E'; // Placeholder
+                    lazyImageObserver.observe(img);
+                }
                 img.alt = testimonial.name;
+                img.loading = 'lazy';
                 img.onerror = function() {
                     handleImageError(this, initials);
                 };
@@ -4960,6 +5010,19 @@ Part of what makes Preventive Medicine (i.e. Public Health and Occupational Medi
             // Update button states
             document.getElementById('testimonialPrev').disabled = currentTestimonial === 0;
             document.getElementById('testimonialNext').disabled = currentTestimonial === testimonials.length - 1;
+            
+            // Load adjacent testimonial images when navigating
+            const testimonialCards = testimonialsWrapper.querySelectorAll('.testimonial-card');
+            // Load current and next testimonial images
+            [currentTestimonial, currentTestimonial + 1, currentTestimonial - 1].forEach(index => {
+                if (index >= 0 && index < testimonialCards.length) {
+                    const img = testimonialCards[index].querySelector('.student-photo-section img');
+                    if (img && img.dataset.src) {
+                        img.src = img.dataset.src;
+                        img.removeAttribute('data-src');
+                    }
+                }
+            });
         }
         
         function goToTestimonial(index) {
@@ -5046,17 +5109,36 @@ Part of what makes Preventive Medicine (i.e. Public Health and Occupational Medi
         const maxPosition = Math.max(0, galleryImages.length - itemsPerView);
         let galleryAutoScroll; // Timer for auto-scrolling
         
-        // Generate gallery items
+        // Generate gallery items with lazy loading
         galleryImages.forEach((image, index) => {
             const item = document.createElement('div');
             item.className = 'gallery-item';
-            item.innerHTML = `
-                <img src="${image.url}" alt="Gallery image ${index + 1}" 
-                     onerror="this.src='https://via.placeholder.com/600x400/003D82/FFFFFF?text=Photo+${index + 1}'">
-                <div class="gallery-overlay">
-                    <p class="gallery-caption">${image.caption}</p>
-                </div>
-            `;
+            
+            const img = document.createElement('img');
+            // Lazy load gallery images (load first 3 immediately, rest on scroll)
+            if (index < 3) {
+                img.src = image.url;
+            } else {
+                img.dataset.src = image.url;
+                img.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400"%3E%3Crect fill="%23e9ecef" width="600" height="400"/%3E%3C/svg%3E'; // Placeholder
+                lazyImageObserver.observe(img);
+            }
+            img.alt = `Gallery image ${index + 1}`;
+            img.loading = 'lazy';
+            img.onerror = function() {
+                this.src = `https://via.placeholder.com/600x400/003D82/FFFFFF?text=Photo+${index + 1}`;
+            };
+            
+            item.appendChild(img);
+            
+            // Add overlay div (if captions exist)
+            if (image.caption) {
+                const overlay = document.createElement('div');
+                overlay.className = 'gallery-overlay';
+                overlay.innerHTML = `<p class="gallery-caption">${image.caption}</p>`;
+                item.appendChild(overlay);
+            }
+            
             item.addEventListener('click', () => openLightbox(index));
             galleryWrapper.appendChild(item);
         });
