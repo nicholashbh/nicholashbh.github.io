@@ -11,13 +11,14 @@
         :root {
             --primary-prussian: #003153;
             --accent-crimson: #DC143C;
-            --light-crimson: #FFE4E9;
-            --prussian-tint: #F0F4F8;
-            --text-primary: #1a202c;
+            --crimson-dark: #B91C3C;
+            --linkedin-blue: #0077B5;
+            --linkedin-dark: #005885;
+            --text-primary: #2c3e50;
             --text-secondary: #4a5568;
-            --text-muted: #718096;
+            --text-muted: #6b7280;
             --bg-white: #ffffff;
-            --bg-light: #f7fafc;
+            --bg-light: #f7f9fc;
             --border-light: #e2e8f0;
             --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
             --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
@@ -34,39 +35,15 @@
         body {
             font-family: 'Inter', sans-serif;
             overflow: hidden;
-            background: #000;
-            color: white;
+            background: #000000;
+            color: var(--text-primary);
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
 
-        /* Video Background with reduced glare */
-        .video-container {
+        /* Video Background */
+        .video-background {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: -1;
-        }
-
-        .video-container::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                rgba(0, 31, 53, 0.7),
-                rgba(0, 0, 0, 0.6)
-            );
-            pointer-events: none;
-        }
-
-        #bg-video {
-            position: absolute;
             top: 50%;
             left: 50%;
             min-width: 100%;
@@ -74,8 +51,8 @@
             width: auto;
             height: auto;
             transform: translate(-50%, -50%);
+            z-index: -1;
             object-fit: cover;
-            filter: brightness(0.7) contrast(1.1);
         }
 
         /* Content Container */
@@ -97,56 +74,64 @@
         /* Name Animation */
         .name-container {
             margin-bottom: 30px;
-            opacity: 0;
-            animation: fadeInUp 2s ease-out 0.5s forwards;
         }
 
         .name {
             font-family: 'Inter', sans-serif;
             font-size: clamp(2.5rem, 8vw, 4.5rem);
             font-weight: 700;
-            color: white;
+            color: var(--text-primary);
             letter-spacing: -1px;
             line-height: 1.2;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
             margin-bottom: 20px;
-        }
-
-        .name span {
+            position: relative;
             display: inline-block;
-            opacity: 0;
-            animation: letterFadeIn 0.6s ease-out forwards;
         }
 
-        /* Stagger name animation */
-        .name span:nth-child(1) { animation-delay: 0.8s; }
-        .name span:nth-child(2) { animation-delay: 0.85s; }
-        .name span:nth-child(3) { animation-delay: 0.9s; }
-        .name span:nth-child(4) { animation-delay: 0.95s; }
-        .name span:nth-child(5) { animation-delay: 1s; }
-        .name span:nth-child(6) { animation-delay: 1.05s; }
-        .name span:nth-child(7) { animation-delay: 1.1s; }
-        .name span:nth-child(8) { animation-delay: 1.15s; }
-        .name span:nth-child(9) { animation-delay: 1.2s; }
-        .name span:nth-child(10) { animation-delay: 1.25s; }
-        .name span:nth-child(11) { animation-delay: 1.3s; }
-        .name span:nth-child(12) { animation-delay: 1.35s; }
-        .name span:nth-child(13) { animation-delay: 1.4s; }
-        .name span:nth-child(14) { animation-delay: 1.45s; }
-        .name span:nth-child(15) { animation-delay: 1.5s; }
-        .name span:nth-child(16) { animation-delay: 1.55s; }
-        .name span:nth-child(17) { animation-delay: 1.6s; }
-        .name span:nth-child(18) { animation-delay: 1.65s; }
-        .name span:nth-child(19) { animation-delay: 1.7s; }
+        /* Typewriter effect container */
+        .typewriter-text {
+            display: inline;
+        }
 
-        @keyframes letterFadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px) scale(0.9);
-            }
-            to {
+        /* Cursor styling */
+        .cursor {
+            display: inline-block;
+            width: 3px;
+            height: 1.2em;
+            background-color: var(--accent-crimson);
+            margin-left: 2px;
+            animation: cursorBlink 1s step-end infinite;
+            vertical-align: text-bottom;
+            position: relative;
+            top: 0.1em;
+        }
+
+        @keyframes cursorBlink {
+            0%, 50% {
                 opacity: 1;
-                transform: translateY(0) scale(1);
+            }
+            51%, 100% {
+                opacity: 0;
+            }
+        }
+
+        /* Cursor fade out after typing */
+        .cursor.fade-out {
+            animation: cursorFinalBlinks 1.5s step-end forwards;
+        }
+
+        @keyframes cursorFinalBlinks {
+            0%, 25% {
+                opacity: 1;
+            }
+            26%, 50% {
+                opacity: 0;
+            }
+            51%, 75% {
+                opacity: 1;
+            }
+            76%, 100% {
+                opacity: 0;
             }
         }
 
@@ -165,12 +150,14 @@
         .tagline {
             font-size: clamp(1.1rem, 2.5vw, 1.5rem);
             font-weight: 600;
-            color: rgba(255, 255, 255, 0.95);
+            color: var(--text-primary);
             margin-bottom: 20px;
             opacity: 0;
-            animation: fadeIn 1.5s ease-out 2.5s forwards;
-            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
             letter-spacing: 0.5px;
+        }
+        
+        .tagline.animate {
+            animation: fadeIn 1.5s ease-out forwards;
         }
 
         .tagline-divider {
@@ -182,18 +169,31 @@
         .description {
             font-size: clamp(0.9rem, 2vw, 1.125rem);
             font-weight: 300;
-            color: rgba(255, 255, 255, 0.85);
+            color: var(--text-secondary);
             max-width: 800px;
             line-height: 1.6;
             margin: 0 auto 40px auto;
             opacity: 0;
-            animation: fadeIn 1.5s ease-out 3s forwards;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+        }
+        
+        .description.animate {
+            animation: fadeInSlide 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
         }
 
         @keyframes fadeIn {
             to {
                 opacity: 1;
+            }
+        }
+
+        @keyframes fadeInSlide {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
 
@@ -207,120 +207,120 @@
             align-items: center;
         }
 
-        /* Button Styles */
+        /* Modern Button Styles */
         .cta-button {
             padding: 18px 40px;
             font-size: 1.1rem;
             font-weight: 500;
             text-decoration: none;
-            border-radius: 8px;
-            transition: all 0.3s ease;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             overflow: hidden;
             display: inline-block;
             opacity: 0;
             cursor: pointer;
-            border: none;
             outline: none;
             font-family: 'Inter', sans-serif;
+            border: none;
+            isolation: isolate;
+            /* Glassmorphism base */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
-
+        
+        /* Ripple effect */
         .cta-button::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.1);
-            transition: left 0.3s ease;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease-out, height 0.6s ease-out;
         }
-
+        
         .cta-button:hover::before {
-            left: 0;
+            width: 300px;
+            height: 300px;
+        }
+        
+        .cta-button.animate {
+            animation: buttonSlideIn 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            animation-fill-mode: forwards;
         }
 
+        /* Resume Button - Crimson with glass effect */
         .resume-button {
-            background: var(--accent-crimson);
+            background: rgba(220, 20, 60, 0.75);
             color: white;
-            box-shadow: 0 4px 15px rgba(220, 20, 60, 0.3);
-            animation: buttonSlideIn 0.8s ease-out 3.5s forwards, resumeGlow 3s ease-in-out infinite;
-            animation-delay: 3.5s, 4.5s;
+            box-shadow: 0 8px 32px rgba(220, 20, 60, 0.2),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+        
+        .resume-button::before {
+            background: rgba(255, 255, 255, 0.3);
         }
 
         .resume-button:hover {
-            background: #b91c3c;
-            transform: translateY(-2px) scale(1.05);
-            box-shadow: 0 6px 20px rgba(220, 20, 60, 0.4);
+            background: rgba(185, 28, 60, 0.85);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(220, 20, 60, 0.3),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.3);
         }
 
-        @keyframes resumeGlow {
-            0%, 100% {
-                box-shadow: 0 4px 15px rgba(220, 20, 60, 0.3);
-            }
-            50% {
-                box-shadow: 0 4px 25px rgba(220, 20, 60, 0.6), 0 0 40px rgba(220, 20, 60, 0.2);
-            }
-        }
-
+        /* LinkedIn Button with glass effect */
         .linkedin-button {
-            background: var(--primary-prussian);
+            background: rgba(0, 119, 181, 0.75);
             color: white;
-            box-shadow: 0 4px 15px rgba(0, 49, 83, 0.3);
-            animation: buttonSlideIn 0.8s ease-out 3.75s forwards, linkedinGlow 3s ease-in-out infinite;
-            animation-delay: 3.75s, 4.75s;
+            box-shadow: 0 8px 32px rgba(0, 119, 181, 0.2),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+        
+        .linkedin-button::before {
+            background: rgba(255, 255, 255, 0.3);
         }
 
         .linkedin-button:hover {
-            background: #002a47;
-            transform: translateY(-2px) scale(1.05);
-            box-shadow: 0 6px 20px rgba(0, 49, 83, 0.4);
+            background: rgba(0, 88, 133, 0.85);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(0, 119, 181, 0.3),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.3);
         }
 
-        @keyframes linkedinGlow {
-            0%, 100% {
-                box-shadow: 0 4px 15px rgba(0, 49, 83, 0.3);
-            }
-            50% {
-                box-shadow: 0 4px 25px rgba(0, 49, 83, 0.6), 0 0 40px rgba(0, 49, 83, 0.2);
-            }
-        }
-
+        /* Contact Button - Glass outlined */
         .contact-button {
-            background: transparent;
-            color: white;
-            border: 2px solid white;
-            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
-            animation: buttonSlideIn 0.8s ease-out 4s forwards, contactGlow 3s ease-in-out infinite;
-            animation-delay: 4s, 5s;
+            background: rgba(255, 255, 255, 0.25);
+            color: var(--text-primary);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+        }
+        
+        .contact-button::before {
+            background: rgba(0, 49, 83, 0.2);
         }
 
         .contact-button:hover {
-            background: white;
-            color: var(--primary-prussian);
-            transform: translateY(-2px) scale(1.05);
-            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
-        }
-
-        @keyframes contactGlow {
-            0%, 100% {
-                box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
-                border-color: rgba(255, 255, 255, 1);
-            }
-            50% {
-                box-shadow: 0 4px 25px rgba(255, 255, 255, 0.3), 0 0 40px rgba(255, 255, 255, 0.15);
-                border-color: rgba(255, 255, 255, 0.8);
-            }
+            background: rgba(255, 255, 255, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.6);
         }
 
         @keyframes buttonSlideIn {
             from {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(25px) scale(0.95);
             }
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0) scale(1);
             }
         }
 
@@ -331,7 +331,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.5);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -425,16 +425,45 @@
             transform: rotate(90deg);
         }
 
+        /* Loading screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading-screen.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--border-light);
+            border-top-color: var(--accent-crimson);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             /* Fix for iOS Safari 100vh issue */
             .content-container {
                 min-height: -webkit-fill-available;
                 padding: 20px 15px;
-            }
-
-            .video-container {
-                min-height: -webkit-fill-available;
             }
 
             .name-container {
@@ -512,31 +541,6 @@
                 padding: 14px 25px;
                 font-size: 0.95rem;
             }
-
-            /* Simplify animations on very small screens */
-            .name span {
-                animation-delay: 0.8s !important;
-            }
-
-            /* Disable glow animations on mobile for better performance */
-            .resume-button {
-                animation: buttonSlideIn 0.8s ease-out 3s forwards !important;
-            }
-            
-            .linkedin-button {
-                animation: buttonSlideIn 0.8s ease-out 3.25s forwards !important;
-            }
-            
-            .contact-button {
-                animation: buttonSlideIn 0.8s ease-out 3.5s forwards !important;
-            }
-        }
-
-        /* Mobile-specific adjustments */
-        @media (max-width: 768px) and (orientation: portrait) {
-            .video-container {
-                transform: scale(1.5);
-            }
         }
 
         /* Prevent horizontal scroll on mobile */
@@ -545,79 +549,39 @@
             width: 100%;
             position: relative;
         }
-
-        /* Loading screen */
-        .loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--primary-prussian);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease;
-        }
-
-        .loading-screen.fade-out {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .loader {
-            width: 50px;
-            height: 50px;
-            border: 3px solid rgba(255, 255, 255, 0.1);
-            border-top-color: var(--accent-crimson);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
     </style>
 </head>
 <body>
+    <!-- Video Background -->
+    <video class="video-background" autoplay loop muted playsinline>
+        <source src="https://xchee-01.github.io/cv/introduction_3.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
     <!-- Loading Screen -->
     <div class="loading-screen" id="loadingScreen">
         <div class="loader"></div>
-    </div>
-
-    <!-- Video Background -->
-    <div class="video-container">
-        <video id="bg-video" autoplay muted loop playsinline>
-            <source src="https://nicholashbh.github.io/cv/introduction.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
     </div>
 
     <!-- Main Content -->
     <div class="content-container">
         <div class="name-container">
             <h1 class="name">
-                <span>N</span><span>i</span><span>c</span><span>h</span><span>o</span><span>l</span><span>a</span><span>s</span>
-                <span> </span>
-                <span>H</span><span>a</span><span>n</span><span>g</span>
-                <span> </span>
-                <span>B</span><span>a</span><span>o</span>
-                <span> </span>
-                <span>H</span><span>a</span><span>n</span>
+                <span class="typewriter-text"></span>
+                <span class="cursor"></span>
             </h1>
             
             <p class="tagline">
-                Occupational Medicine Clinician<span class="tagline-divider">•</span>Preventive Medicine Resident<span class="tagline-divider">•</span>Policy Innovator
+                Public Health Advocate<span class="tagline-divider">•</span>Preventive Medicine Resident<span class="tagline-divider">•</span>Policy Innovator
             </p>
             
             <p class="description">
-                                    Shaping healthier futures at the intersection of medicine and environmental resilience
+                Shaping healthier futures at the intersection of medicine and environmental resilience
             </p>
         </div>
 
         <div class="buttons-container">
-            <a href="https://nicholashbh.github.io/cv/cv_v11.html" class="cta-button resume-button">
+            <a href="https://nicholashbh.github.io/cv/cv.html" class="cta-button resume-button">
                 Curriculum Vitae
             </a>
             <a href="https://www.linkedin.com/in/nicholas-h-4798837/" class="cta-button linkedin-button">
@@ -666,20 +630,11 @@
     </div>
 
     <script>
-        // Hide loading screen when video is ready
-        const video = document.getElementById('bg-video');
+        // Hide loading screen after a short delay
         const loadingScreen = document.getElementById('loadingScreen');
-
-        video.addEventListener('loadeddata', function() {
-            setTimeout(() => {
-                loadingScreen.classList.add('fade-out');
-            }, 500);
-        });
-
-        // Fallback for slow connections
         setTimeout(() => {
             loadingScreen.classList.add('fade-out');
-        }, 3000);
+        }, 500);
 
         // Contact Modal Functions
         function openContactModal() {
@@ -706,10 +661,56 @@
             }
         });
 
-        // Ensure video plays on mobile devices
-        video.play().catch(function(error) {
-            console.log("Video autoplay failed:", error);
-        });
+        // Typewriter effect
+        const text = "Nicholas Hang Bao Han";
+        const typewriterElement = document.querySelector('.typewriter-text');
+        const cursorElement = document.querySelector('.cursor');
+        const tagline = document.querySelector('.tagline');
+        const description = document.querySelector('.description');
+        const buttons = document.querySelectorAll('.cta-button');
+        let charIndex = 0;
+        const typingSpeed = 80; // milliseconds per character
+        const startDelay = 800; // delay before starting to type
+
+        function typeWriter() {
+            if (charIndex < text.length) {
+                typewriterElement.textContent += text.charAt(charIndex);
+                charIndex++;
+                setTimeout(typeWriter, typingSpeed);
+            } else {
+                // After typing is complete, add fade-out class to cursor and trigger other animations
+                setTimeout(() => {
+                    cursorElement.classList.add('fade-out');
+                    startElementAnimations();
+                }, 500);
+            }
+        }
+
+        // Sequential animation: Name -> Tagline -> Description & Buttons
+        function startElementAnimations() {
+            // Step 2: Fade in the tagline after name completes (300ms delay)
+            setTimeout(() => {
+                if (tagline) {
+                    tagline.classList.add('animate');
+                }
+            }, 300);
+            
+            // Step 3: Fade in description and buttons after tagline completes
+            // 300ms initial delay + 800ms for partial tagline animation = 1100ms total
+            setTimeout(() => {
+                if (description) {
+                    description.classList.add('animate');
+                }
+                
+                // Fade in all buttons at the same time
+                buttons.forEach((button) => {
+                    button.classList.add('animate');
+                });
+            }, 1100);
+        }
+
+        // Start typewriter effect after delay
+        setTimeout(typeWriter, startDelay);
     </script>
 </body>
 </html>
