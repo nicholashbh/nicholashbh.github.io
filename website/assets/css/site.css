@@ -533,6 +533,10 @@ table.chart__t caption {
 .cols-2 { display: grid; gap: 0 var(--s5); }
 @media (min-width: 40em) { .cols-2 { grid-template-columns: 1fr 1fr; } .cols-2 > li:nth-child(2) { border-top: 1.5px solid var(--ink); } }
 
+/* Photograph pairs. One column on a phone, two side by side from tablet up. */
+.photo-grid { display: grid; gap: var(--s4); margin-top: var(--s5); }
+@media (min-width: 50em) { .photo-grid { grid-template-columns: 1fr 1fr; gap: var(--s5); } }
+
 /* Dated example rows */
 .example { display: grid; gap: var(--s1); padding: var(--s3) 0; border-top: 1px solid var(--rule-hair); }
 .example:first-of-type { border-top: 1.5px solid var(--ink); }
@@ -541,7 +545,10 @@ table.chart__t caption {
 
 /* --- Contact ------------------------------------------------------------- */
 .contact__grid { display: grid; gap: var(--s4); }
-@media (min-width: 56.25em) { .contact__grid { grid-template-columns: repeat(4, 1fr); gap: var(--s4); } }
+/* auto-fit rather than a fixed four, so the row stays flush when a card is
+   removed. The information-session card was dropped from every page once it
+   turned out no such session is published; a hard repeat(4) left a hole. */
+@media (min-width: 56.25em) { .contact__grid { grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: var(--s4); } }
 .contact__grid > div { border-top: 1.5px solid var(--ink); padding-top: var(--s2); }
 
 /* --- Footer -------------------------------------------------------------- */
