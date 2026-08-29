@@ -5,35 +5,42 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Admissions and dates — Preventive Medicine Residency, NUHS</title>
 <meta name="description" content="How to apply to Singapore's national Preventive Medicine residency: the July 2027 cycle, deadlines, eligibility, selection, and the sponsorship terms in full.">
-<link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
-<link rel="preload" as="font" type="font/woff2" href="../assets/fonts/archivo-latin.woff2" crossorigin>
+<!-- build:head -->
+<link rel="icon" href="../assets/img/favicon.ico" sizes="any">
+<link rel="icon" href="../assets/img/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+<link rel="preload" as="font" type="font/woff2" href="../assets/fonts/OpenSans-Regular-Latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="../assets/fonts/OpenSans-LightRegular-Latin.woff2" crossorigin>
 <link rel="stylesheet" href="../assets/css/site.css">
+<!-- /build:head -->
 </head>
 <body>
 
+<!-- build:header -->
 <a class="skip" href="#main">Skip to main content</a>
 
 <header class="masthead">
   <div class="masthead__in">
     <a class="masthead__logo" href="../index.html">
-      <img src="../assets/img/nuhs-logo.png" alt="NUHS" width="353" height="260">
-      <span>Preventive Medicine Residency</span>
+      <img src="../assets/img/nuhs-logo-mark.png" alt="NUHS" width="349" height="162">
+      <span class="masthead__wordmark">National Preventive Medicine <br>Residency</span>
     </a>
     <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
     <nav class="nav" id="nav" aria-label="Main">
       <ul>
         <li><a href="../index.html">Home</a></li>
-        <li><a href="../what-is-preventive-medicine/index.html">The Specialty</a></li>
         <li><a href="../programme/index.html">The Programme</a></li>
         <li><a href="../admissions/index.html" aria-current="page">Admissions</a></li>
         <li><a href="../careers/index.html">Careers</a></li>
         <li><a href="../alumni/index.html">Alumni</a></li>
         <li><a href="../people/index.html">People</a></li>
+        <li><a href="../photos/index.html">Photos</a></li>
         <li><a href="../faq/index.html">FAQ</a></li>
       </ul>
     </nav>
   </div>
 </header>
+<!-- /build:header -->
 
 <main id="main" tabindex="-1">
 
@@ -248,12 +255,12 @@
   <section class="section wrap">
     <div class="sec-head">
       <h2>Contact</h2>
-      <p class="standfirst">Three ways to reach the programme. Two current residents also take questions from applicants directly, without the Programme Office copied in.</p>
+      <p class="standfirst">Three ways to reach the programme. The Programme Office can also put you in touch with a current resident.</p>
     </div>
     <div class="contact__grid">
       <div>
         <p class="label">Ask a current resident</p>
-        <p class="small">For questions about the training itself, and what the five years are like day to day.<br><a class="link" style="font-size:inherit" href="../people/index.html">Dr Nadia Rahim and Dr Ezekiel Fong</a></p>
+        <p class="small">For questions about the training itself, and what the five years are like day to day.<br><a class="link" style="font-size:inherit" href="../people/index.html">Ask to speak with a current resident</a></p>
       </div>
       <div>
         <p class="label">Programme Director</p>
@@ -269,108 +276,29 @@
 
 </main>
 
+<!-- build:foot -->
 <footer class="foot">
   <div class="wrap">
     <ul>
       <li><a href="../index.html">Home</a></li>
-      <li><a href="../what-is-preventive-medicine/index.html">The Specialty</a></li>
       <li><a href="../programme/index.html">The Programme</a></li>
       <li><a href="../programme/training-sites/index.html">Training Sites</a></li>
       <li><a href="../admissions/index.html">Admissions</a></li>
       <li><a href="../careers/index.html">Careers</a></li>
       <li><a href="../alumni/index.html">Alumni</a></li>
       <li><a href="../people/index.html">People</a></li>
+      <li><a href="../photos/index.html">Photos</a></li>
       <li><a href="../faq/index.html">FAQ</a></li>
     </ul>
     <p>National Preventive Medicine Residency Programme, National University Health System, Singapore.<br>
     Page last verified 1 August 2026 by the Programme Office.</p>
   </div>
 </footer>
+<!-- /build:foot -->
 
-<script>
-(function () {
-  var btn = document.querySelector('.nav__toggle');
-  var nav = document.getElementById('nav');
-  if (!btn || !nav) return;
-  btn.addEventListener('click', function () {
-    var open = nav.getAttribute('data-open') === 'true';
-    nav.setAttribute('data-open', String(!open));
-    btn.setAttribute('aria-expanded', String(!open));
-    btn.textContent = open ? 'Menu' : 'Close';
-  });
-})();
 
-/* Count-up on the decision numbers. Runs once, when the row scrolls into
-   view. Skipped entirely under prefers-reduced-motion, and skipped if
-   IntersectionObserver is unavailable — in both cases the final value is
-   already in the markup, so nothing is ever hidden. Tabular numerals keep
-   the width fixed, so the row does not reflow while counting. */
-(function () {
-  var els = document.querySelectorAll('.stats .count');
-  if (!els.length) return;
-  if (!('IntersectionObserver' in window)) return;
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-  var DURATION = 800;
-  var easeOut = function (t) { return 1 - Math.pow(1 - t, 3); };
-
-  function run(el) {
-    var to = parseInt(el.getAttribute('data-to'), 10);
-    if (isNaN(to)) return;
-    var start = null;
-
-    /* Do NOT zero the element here. If requestAnimationFrame never runs — a
-       backgrounded tab, a throttled or non-compositing renderer — the real
-       figure must stay on screen. "0 residents currently in training" is
-       wrong information, which is strictly worse than no animation. So the
-       reset to zero happens inside the first frame, and a timer forces the
-       final value if the frames stall midway. */
-    var settle = setTimeout(function () { el.textContent = String(to); }, DURATION + 1200);
-
-    function step(ts) {
-      if (start === null) { start = ts; el.textContent = '0'; }
-      var p = Math.min((ts - start) / DURATION, 1);
-      el.textContent = String(Math.round(easeOut(p) * to));
-      if (p < 1) { requestAnimationFrame(step); }
-      else { clearTimeout(settle); el.textContent = String(to); }
-    }
-    requestAnimationFrame(step);
-  }
-
-  function runAll() {
-    els.forEach(run);
-  }
-
-  /* Observe the ROW, not each numeral: the four should count together, and a
-     block-level container has far more reliable intersection geometry than an
-     inline span. */
-  var row = document.querySelector('.stats');
-  var fired = false;
-  function once() { if (fired) return; fired = true; runAll(); }
-
-  var io = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      if (!e.isIntersecting) return;
-      io.disconnect();
-      once();
-    });
-  }, { threshold: 0.25 });
-  io.observe(row);
-
-  /* Belt and braces: if the row is already on screen at load, the observer's
-     first callback handles it — but if IO is throttled or never fires, a
-     scroll listener picks it up. Either way the final value is already in the
-     markup, so a total failure costs nothing but the animation. */
-  function checkNow() {
-    if (fired) return;
-    var r = row.getBoundingClientRect();
-    if (r.top < window.innerHeight * 0.9 && r.bottom > 0) { io.disconnect(); once(); }
-  }
-  window.addEventListener('scroll', checkNow, { passive: true });
-  window.addEventListener('load', checkNow);
-})();
-</script>
-
+<!-- build:tail -->
+<script src="../assets/js/site.js"></script>
 <script type="speculationrules">
 {
   "prerender": [{
@@ -379,5 +307,7 @@
   }]
 }
 </script>
+<!-- /build:tail -->
+
 </body>
 </html>

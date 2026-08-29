@@ -5,76 +5,97 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>National Preventive Medicine Residency Programme — NUHS</title>
 <meta name="description" content="The national residency in Preventive Medicine, Singapore. 60 months, a compulsory Master of Public Health, and rotations across eight ministries, agencies and healthcare clusters.">
-<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
-<link rel="preload" as="font" type="font/woff2" href="assets/fonts/archivo-latin.woff2" crossorigin>
+<!-- build:head -->
+<link rel="icon" href="assets/img/favicon.ico" sizes="any">
+<link rel="icon" href="assets/img/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="preload" as="font" type="font/woff2" href="assets/fonts/OpenSans-Regular-Latin.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="assets/fonts/OpenSans-LightRegular-Latin.woff2" crossorigin>
 <link rel="stylesheet" href="assets/css/site.css">
+<!-- /build:head -->
 </head>
 <body>
 
+<!-- build:header -->
 <a class="skip" href="#main">Skip to main content</a>
 
 <header class="masthead">
   <div class="masthead__in">
     <a class="masthead__logo" href="index.html">
-      <img src="assets/img/nuhs-logo.png" alt="NUHS" width="353" height="260">
-      <span>Preventive Medicine Residency</span>
+      <img src="assets/img/nuhs-logo-mark.png" alt="NUHS" width="349" height="162">
+      <span class="masthead__wordmark">National Preventive Medicine <br>Residency</span>
     </a>
     <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
     <nav class="nav" id="nav" aria-label="Main">
       <ul>
         <li><a href="index.html" aria-current="page">Home</a></li>
-        <li><a href="what-is-preventive-medicine/index.html">The Specialty</a></li>
         <li><a href="programme/index.html">The Programme</a></li>
         <li><a href="admissions/index.html">Admissions</a></li>
         <li><a href="careers/index.html">Careers</a></li>
         <li><a href="alumni/index.html">Alumni</a></li>
         <li><a href="people/index.html">People</a></li>
+        <li><a href="photos/index.html">Photos</a></li>
         <li><a href="faq/index.html">FAQ</a></li>
       </ul>
     </nav>
   </div>
 </header>
+<!-- /build:header -->
 
 <main id="main" tabindex="-1">
 
   <!-- ================= HERO ================= -->
-  <section class="hero wrap">
-    <div class="hero__grid">
-      <h1>The national residency in Preventive Medicine.</h1>
-      <ul class="hero__facts">
-        <li>
-          <span class="v">60 months</span>
-          <span class="k">Full-time, to specialist accreditation</span>
-        </li>
-        <li>
-          <span class="v">Fully sponsored MPH</span>
-          <span class="k">NUS Saw Swee Hock School of Public Health</span>
-        </li>
-        <li>
-          <span class="v">8 organisations</span>
-          <span class="k">Two ministries beyond Health, a statutory board, a uniformed service and all three clusters</span>
-        </li>
-        <li>
-          <span class="v">2 exit pathways</span>
-          <span class="k">Public Health, or Occupational Medicine</span>
-        </li>
-        <li>
-          <span class="v">24 residents</span>
-          <span class="k">Currently in training</span>
-        </li>
-      </ul>
+  <div class="hero-stage">
+    <!-- Decorative background loop, so it is aria-hidden and carries no
+         controls. The <source> elements start with no src: the script at the
+         foot of the page fills them in only when the visit qualifies. The
+         poster still is painted by CSS on this div rather than by the poster
+         attribute, so it is there with JavaScript off as well. -->
+    <div class="hero-stage__bg" aria-hidden="true">
+      <video autoplay muted loop playsinline preload="none"
+             disablepictureinpicture disableremoteplayback
+             width="1920" height="1080">
+        <source data-src="assets/video/hero.webm" type="video/webm">
+        <source data-src="assets/video/hero.mp4" type="video/mp4">
+      </video>
     </div>
-    <p class="statement" style="margin-top: clamp(48px, 6vw, 96px)">Singapore has one training pathway to specialist registration in Public Health and Occupational Medicine. This is it.</p>
-    <p style="margin-top: var(--s4)"><a class="link" href="what-is-preventive-medicine/index.html">What a preventive medicine physician does</a></p>
-  </section>
+
+    <section class="hero wrap">
+      <div class="hero__grid">
+        <h1>The national residency in Preventive Medicine.</h1>
+        <ul class="hero__facts">
+          <li>
+            <span class="v" data-ed-b="0" data-ed-s="3091" data-ed-e="3100" data-ed-o="3075" data-ed-c="3107">5 years<br data-ed-b="0" data-ed-s="3184" data-ed-e="3184" data-ed-o="3180" data-ed-c="3184"><span style="color: rgb(51, 51, 51); font-size: 13px; font-weight: 400;" data-ed-b="0" data-ed-s="3257" data-ed-e="3295" data-ed-o="3184" data-ed-c="3302">Full-time, to specialist accreditation</span></span></li>
+          <li>
+            <span class="v">Fully sponsored MPH</span>
+            <span class="k">NUS Saw Swee Hock School of Public Health</span>
+          </li>
+          <li>
+            <span class="v">8 organisations</span>
+            <span class="k">Two ministries beyond Health, a statutory board, a uniformed service and all three clusters</span>
+          </li>
+          <li>
+            <span class="v">2 exit pathways</span>
+            <span class="k">Public Health, or Occupational Medicine</span>
+          </li>
+          <li>
+            <span class="v">24 residents</span>
+            <span class="k">Currently in training</span>
+          </li>
+        </ul>
+      </div>
+      <p class="statement" style="margin-top: clamp(48px, 6vw, 96px)">Singapore has one training pathway to specialist registration in Public Health and Occupational Medicine. This is it.</p>
+      <p style="margin-top: var(--s4)"><a class="link" href="programme/index.html">What a preventive medicine physician does</a></p>
+    </section>
+  </div>
 
   <figure class="hero__band bleed">
     <picture>
       <source type="image/webp" srcset="assets/img/band-900.webp 900w, assets/img/band-1400.webp 1400w, assets/img/band-2000.webp 2000w" sizes="100vw">
       <img src="assets/img/band-1400.jpg" width="2000" height="857" fetchpriority="high" decoding="async"
-           alt="Preventive medicine residents at a programme training session.">
+           alt="A masked, gloved clinician taking a sample from a seated patient at a field clinic.">
     </picture>
-    <figcaption class="caption">Residents at a programme training session.</figcaption>
+    <figcaption class="caption">Taking a sample at a field clinic.</figcaption>
   </figure>
 
   <!-- ================= DECISION NUMBERS ================= -->
@@ -158,6 +179,9 @@
         <li><b>National University Health System</b><span class="k">Academic health system and Sponsoring Institution</span></li>
       </ul>
       <p class="prov">Participating institutions as named on the <a class="link" style="font-size:inherit" href="https://www.nuhs.edu.sg/education/postgraduate-education/nuhs-residency/preventive-medicine-residency-programme">NUHS programme page</a>, which lists seven external organisations alongside NUHS institutions. Residents rotate through more than ten sites across these eight organisations; the exact number varies by exit pathway and by the advanced rotations chosen in senior residency.</p>
+      <div class="cta-wrap">
+        <a class="btn btn--outline" href="careers/index.html">Careers after the programme</a>
+      </div>
       <p style="margin-top: var(--s4)">
         <a class="link" href="alumni/index.html">See where every graduate works now</a>
       </p>
@@ -192,12 +216,12 @@
   <section class="section wrap">
     <div class="sec-head">
       <h2>Contact</h2>
-      <p class="standfirst">Three ways to reach the programme. Two current residents also take questions from applicants directly, without the Programme Office copied in.</p>
+      <p class="standfirst">Three ways to reach the programme. The Programme Office can also put you in touch with a current resident.</p>
     </div>
     <div class="contact__grid">
       <div>
         <p class="label">Ask a current resident</p>
-        <p class="small">For questions about the training itself, and what the five years are like day to day.<br><a class="link" style="font-size:inherit" href="people/index.html">Dr Nadia Rahim and Dr Ezekiel Fong</a></p>
+        <p class="small">For questions about the training itself, and what the five years are like day to day.<br><a class="link" style="font-size:inherit" href="people/index.html">Ask to speak with a current resident</a></p>
       </div>
       <div>
         <p class="label">Programme Director</p>
@@ -213,108 +237,29 @@
 
 </main>
 
+<!-- build:foot -->
 <footer class="foot">
   <div class="wrap">
     <ul>
       <li><a href="index.html">Home</a></li>
-      <li><a href="what-is-preventive-medicine/index.html">The Specialty</a></li>
       <li><a href="programme/index.html">The Programme</a></li>
       <li><a href="programme/training-sites/index.html">Training Sites</a></li>
       <li><a href="admissions/index.html">Admissions</a></li>
       <li><a href="careers/index.html">Careers</a></li>
       <li><a href="alumni/index.html">Alumni</a></li>
       <li><a href="people/index.html">People</a></li>
+      <li><a href="photos/index.html">Photos</a></li>
       <li><a href="faq/index.html">FAQ</a></li>
     </ul>
     <p>National Preventive Medicine Residency Programme, National University Health System, Singapore.<br>
     Page last verified 1 August 2026 by the Programme Office.</p>
   </div>
 </footer>
+<!-- /build:foot -->
 
-<script>
-(function () {
-  var btn = document.querySelector('.nav__toggle');
-  var nav = document.getElementById('nav');
-  if (!btn || !nav) return;
-  btn.addEventListener('click', function () {
-    var open = nav.getAttribute('data-open') === 'true';
-    nav.setAttribute('data-open', String(!open));
-    btn.setAttribute('aria-expanded', String(!open));
-    btn.textContent = open ? 'Menu' : 'Close';
-  });
-})();
 
-/* Count-up on the decision numbers. Runs once, when the row scrolls into
-   view. Skipped entirely under prefers-reduced-motion, and skipped if
-   IntersectionObserver is unavailable — in both cases the final value is
-   already in the markup, so nothing is ever hidden. Tabular numerals keep
-   the width fixed, so the row does not reflow while counting. */
-(function () {
-  var els = document.querySelectorAll('.stats .count');
-  if (!els.length) return;
-  if (!('IntersectionObserver' in window)) return;
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-  var DURATION = 800;
-  var easeOut = function (t) { return 1 - Math.pow(1 - t, 3); };
-
-  function run(el) {
-    var to = parseInt(el.getAttribute('data-to'), 10);
-    if (isNaN(to)) return;
-    var start = null;
-
-    /* Do NOT zero the element here. If requestAnimationFrame never runs — a
-       backgrounded tab, a throttled or non-compositing renderer — the real
-       figure must stay on screen. "0 residents currently in training" is
-       wrong information, which is strictly worse than no animation. So the
-       reset to zero happens inside the first frame, and a timer forces the
-       final value if the frames stall midway. */
-    var settle = setTimeout(function () { el.textContent = String(to); }, DURATION + 1200);
-
-    function step(ts) {
-      if (start === null) { start = ts; el.textContent = '0'; }
-      var p = Math.min((ts - start) / DURATION, 1);
-      el.textContent = String(Math.round(easeOut(p) * to));
-      if (p < 1) { requestAnimationFrame(step); }
-      else { clearTimeout(settle); el.textContent = String(to); }
-    }
-    requestAnimationFrame(step);
-  }
-
-  function runAll() {
-    els.forEach(run);
-  }
-
-  /* Observe the ROW, not each numeral: the four should count together, and a
-     block-level container has far more reliable intersection geometry than an
-     inline span. */
-  var row = document.querySelector('.stats');
-  var fired = false;
-  function once() { if (fired) return; fired = true; runAll(); }
-
-  var io = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      if (!e.isIntersecting) return;
-      io.disconnect();
-      once();
-    });
-  }, { threshold: 0.25 });
-  io.observe(row);
-
-  /* Belt and braces: if the row is already on screen at load, the observer's
-     first callback handles it — but if IO is throttled or never fires, a
-     scroll listener picks it up. Either way the final value is already in the
-     markup, so a total failure costs nothing but the animation. */
-  function checkNow() {
-    if (fired) return;
-    var r = row.getBoundingClientRect();
-    if (r.top < window.innerHeight * 0.9 && r.bottom > 0) { io.disconnect(); once(); }
-  }
-  window.addEventListener('scroll', checkNow, { passive: true });
-  window.addEventListener('load', checkNow);
-})();
-</script>
-
+<!-- build:tail -->
+<script src="assets/js/site.js"></script>
 <script type="speculationrules">
 {
   "prerender": [{
@@ -323,5 +268,7 @@
   }]
 }
 </script>
+<!-- /build:tail -->
+
 </body>
 </html>

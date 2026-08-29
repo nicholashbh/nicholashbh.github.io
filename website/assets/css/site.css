@@ -1,159 +1,176 @@
 /* ==========================================================================
-   National Preventive Medicine Residency Programme — "Sixty Months"
-   Design system v1. Flat, hairline-ruled, zero icons, zero gradients,
-   zero card shadows, zero glass. Depth comes from 1px rules and a
-   1.11:1 change of paper stock.
+   National Preventive Medicine Residency Programme
+   NUHS house style. Every token below is the value nuhs.edu.sg actually
+   ships, read out of its own stylesheet rather than eyeballed:
 
-   Brand: NUHS Navy #002F6C (PMS 288C) and NUHS Orange #E57200 (PMS 152C),
-   both sampled directly from the official NUHS wordmark.
+     main.min.css  :root{--nuhs-color-brand-darkBlue:#002f6c;
+                          --nuhs-color-brand-blue:#00a9e0;
+                          --nuhs-color-base:#333;
+                          --nuhs-color-accent:#337ab7;
+                          --nuhs-color-links:#337ab7;
+                          --nuhs-color-hover:#d7340b;
+                          --nuhs-color-border-lightGrey:1px solid #DDD}
+
+   Type is Open Sans at 300/400/600/700, the same subset files NUHS serves.
+   Headings run LIGHT in dark blue — that weight, not the colour, is the
+   thing that makes a page read as NUHS.
+
+   No icons anywhere, by instruction. NUHS itself loads Font Awesome; we do
+   not, so every affordance here has to be carried by words, rule and space.
    ========================================================================== */
 
 /* --- Fonts ---------------------------------------------------------------
-   Self-hosted, SIL OFL. Archivo carries the whole site; hierarchy is on the
-   WIDTH axis (wdth 75 display / wdth 100 body), not on a second family.
-   Noto Serif is admitted in exactly two components: the director's letter
-   and pull quotes. NUS identity guidance names Noto Serif as its free serif.
+   Open Sans, Apache 2.0, self-hosted. Latin subset, matching NUHS's own
+   unicode-range so the files stay ~14KB each.
    ------------------------------------------------------------------------ */
 @font-face {
-  font-family: 'Archivo';
-  src: url('../fonts/archivo-latin.woff2') format('woff2-variations');
-  font-weight: 400 700;
-  font-stretch: 62% 125%;
-  font-style: normal;
-  font-display: swap;
-  unicode-range: U+0000-00FF, U+2010-2015, U+2018-201D, U+2026, U+2032-2033, U+2212;
+  font-family: 'Open Sans';
+  src: url('../fonts/OpenSans-LightRegular-Latin.woff2') format('woff2');
+  font-weight: 300; font-style: normal; font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
 }
 @font-face {
-  font-family: 'Noto Serif';
-  src: url('../fonts/notoserif-latin.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: optional;
-  unicode-range: U+0000-00FF, U+2010-2015, U+2018-201D, U+2026;
+  font-family: 'Open Sans';
+  src: url('../fonts/OpenSans-Regular-Latin.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('../fonts/OpenSans-SemiBoldRegular-Latin.woff2') format('woff2');
+  font-weight: 600; font-style: normal; font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('../fonts/OpenSans-BoldRegular-Latin.woff2') format('woff2');
+  font-weight: 700; font-style: normal; font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('../fonts/OpenSans-Italic-Latin.woff2') format('woff2');
+  font-weight: 400; font-style: italic; font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
 }
 
 /* --- Tokens -------------------------------------------------------------- */
 :root {
   color-scheme: light only;
 
-  /* Surfaces — warm neutral paper, R>G>B with a 6-point spread */
-  --paper:       #FAF8F4;
-  --paper-sunk:  #F1ECE2;   /* 1.11:1 vs paper — a change of stock, not a box */
-  --card:        #FFFFFF;
+  /* NUHS brand, verbatim */
+  --navy:        #002F6C;   /* brand darkBlue — 12.94:1 on white */
+  --navy-deep:   #00224E;   /* one step down, for inverted bands */
+  --cyan:        #00A9E0;   /* brand blue — 2.71:1, so FILL ONLY, never text */
+  --accent:      #337AB7;   /* NUHS accent — used as a FILL (white on it, 4.56:1) */
+  --accent-dark: #2C6597;   /* NUHS's own secondary-button hover */
+  /* Link text is the darker of NUHS's two blues. Their #337AB7 measures
+     4.56:1 on white — it passes there and nowhere else, dropping to 4.24:1
+     the moment a link sits on the sunk background. #2C6597 is also NUHS's
+     (it is their secondary-button hover) and holds 6.15:1 on white,
+     5.72:1 on sunk, so links pass on every surface the site actually uses. */
+  --link:        #2C6597;
+  --accent-soft: #E8F1F8;   /* accent at ~8%, for tints */
+  --alert:       #D7340B;   /* NUHS hover red — 4.79:1 */
+
+  /* Surfaces — NUHS sits on white, not on a warm stock */
+  --paper:       #FFFFFF;
+  --paper-sunk:  #F4F7FA;   /* cool wash, 1.04:1 — a change of ground, not a box */
+  --paper-navy:  var(--navy);
 
   /* Text */
-  --ink:         #1A1917;   /* 16.56:1 on paper — AAA */
-  --ink-muted:   #5C574E;   /*  6.76:1 on paper — AA body, AAA large */
+  --ink:         #333333;   /* NUHS base — 12.63:1 */
+  --ink-muted:   #5F6A75;   /*  5.92:1 — AA body */
   --ink-invert:  #FFFFFF;
 
-  /* Brand — exactly two colours carry the entire identity */
-  --accent:      #002F6C;   /* NUHS Navy  PMS 288C — 12.20:1 on paper */
-  --accent-deep: #00224E;   /* Navy at 72% value — 14.79:1; white on it 15.69:1 */
-  --signal:      #E57200;   /* NUHS Orange PMS 152C — FILL ONLY (2.94:1 as text) */
-  --signal-ink:  #8A4600;   /* the same hue darkened — 6.70:1 — if orange must be text */
-
   /* Rules */
-  --rule-hair:   #E5DED2;   /* 1.26:1 — decorative only */
-  --rule-strong: #C9C0AF;   /* 1.70:1 — section boundaries */
-  --rule-ui:     #82765E;   /* 4.21:1 — MANDATORY on every form control (SC 1.4.11) */
+  --rule-hair:   #E8EBEF;
+  --rule:        #DDDDDD;   /* NUHS border-lightGrey */
+  --rule-strong: #C4CBD4;
+  --rule-ui:     #6E7885;   /* 4.52:1 — mandatory on form controls (SC 1.4.11) */
 
-  /* Type scale — fluid, interpolated 360→1440px, every value carries a rem
-     term so it survives 200% browser zoom (WCAG 1.4.4) */
-  --fs-display: clamp(2.5rem, 1.5833rem + 4.0741vw, 5.25rem);
-  --fs-h1:      clamp(2rem, 1.4583rem + 2.4074vw, 3.625rem);
-  --fs-h2:      clamp(1.625rem, 1.3333rem + 1.2963vw, 2.5rem);
-  --fs-h3:      clamp(1.3125rem, 1.1667rem + 0.6481vw, 1.75rem);
-  --fs-h4:      clamp(1.125rem, 1.0625rem + 0.2778vw, 1.3125rem);
-  --fs-lead:    clamp(1.1875rem, 1.1042rem + 0.3704vw, 1.4375rem);
-  --fs-body:    clamp(1.0625rem, 1.0313rem + 0.1389vw, 1.1563rem);
-  --fs-small:   clamp(0.9375rem, 0.9271rem + 0.0463vw, 0.9688rem);
-  --fs-micro:   0.875rem;
-  --fs-stat:    clamp(2.75rem, 2rem + 3.3333vw, 5rem);
+  /* Type scale — NUHS's rem steps, made fluid so they survive 200% zoom */
+  --fs-display: clamp(2.25rem, 1.4rem + 3.78vw, 4.25rem);
+  --fs-h1:      clamp(1.875rem, 1.44rem + 1.94vw, 2.9rem);
+  --fs-h2:      clamp(1.5rem, 1.28rem + 0.97vw, 2.05rem);
+  --fs-h3:      clamp(1.25rem, 1.14rem + 0.49vw, 1.5rem);
+  --fs-h4:      clamp(1.0625rem, 1.02rem + 0.19vw, 1.1875rem);
+  --fs-lead:    clamp(1.125rem, 1.06rem + 0.29vw, 1.3125rem);
+  --fs-body:    1rem;
+  --fs-small:   0.9375rem;
+  --fs-micro:   0.8125rem;
+  --fs-stat:    clamp(2.5rem, 1.8rem + 3.1vw, 4rem);
 
-  /* Measures — four caps, because capping prose alone lets a 58px headline
-     sprawl into a banner */
+  /* Measures */
   --measure-prose:    68ch;
-  --measure-lede:     46ch;
-  --measure-headline: 20ch;
-  --measure-hero:     14ch;
-  --measure-quote:    28ch;
-  --measure-caption:  52ch;
+  --measure-lede:     52ch;
+  --measure-headline: 22ch;
+  --measure-quote:    34ch;
+  --measure-caption:  56ch;
 
-  /* Containers — prose never widens, data always does. That one step is the
-     page-level signature. */
   --container-prose: 1150px;
   --container-wide:  1440px;
   --gutter: 24px;
 
-  /* Spacing — strict 8px base, eight values, no ad-hoc gaps */
   --s1: 8px;  --s2: 16px; --s3: 24px; --s4: 32px;
   --s5: 48px; --s6: 64px; --s7: 96px; --s8: 128px;
 
-  --chrome: 64px;
-  --t: 120ms;
-  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --radius: 5px;            /* NUHS --nuhs-btn-border-radius */
+  --radius-lg: 8px;
+  --chrome: 76px;
+
+  /* Motion. Three durations only: a tick for colour, a beat for movement,
+     a longer one for anything that changes size. */
+  --t-tick: 120ms;
+  --t-beat: 200ms;
+  --t-slow: 320ms;
+  --ease:      cubic-bezier(0.2, 0, 0, 1);
+  --ease-out:  cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-back: cubic-bezier(0.34, 1.4, 0.64, 1);
 
   scroll-padding-top: calc(var(--chrome) + 8px);
 }
-@media (min-width: 40em)   { :root { --gutter: 48px; } }
-@media (min-width: 90em)   { :root { --gutter: 80px; } }
+@media (min-width: 40em) { :root { --gutter: 40px; } }
+@media (min-width: 90em) { :root { --gutter: 64px; } }
 
 /* --- Reset --------------------------------------------------------------- */
 *, *::before, *::after { box-sizing: border-box; }
-/* The paper colour must sit on <html>, not only on <body>. Without it the
-   browser paints its default white between page loads, which is the flash
-   you see as a "jump" when moving from page to page. */
-html { -webkit-text-size-adjust: 100%; background: #FAF8F4; }
+html { -webkit-text-size-adjust: 100%; background: #FFFFFF; }
 body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
-  font-family: 'Archivo', 'Segoe UI', system-ui, -apple-system, Arial, sans-serif;
+  font-family: 'Open Sans', 'Segoe UI', system-ui, -apple-system, Arial, sans-serif;
   font-size: var(--fs-body);
   font-weight: 400;
-  font-stretch: 100%;
   line-height: 1.62;
   font-variant-numeric: lining-nums;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
-main { overflow-x: hidden; }   /* on main, NOT body, so position:sticky survives */
+main { overflow-x: clip; }
 img { max-width: 100%; height: auto; display: block; }
 [id] { scroll-margin-top: calc(var(--chrome) + 8px); }
 
-h1, h2, h3, h4 {
-  margin: 0;
-  font-weight: 700;
-  text-wrap: balance;
-  hyphens: none;
-}
+/* NUHS sets h1-h3 in brand dark blue at LIGHT weight. That is the single
+   most recognisable thing about their pages, so it is reproduced exactly. */
+h1, h2, h3, h4 { margin: 0; color: var(--navy); text-wrap: balance; hyphens: none; }
 p { margin: 0 0 var(--s3); max-width: var(--measure-prose); text-wrap: pretty; }
 p:last-child { margin-bottom: 0; }
 
 /* --- Type steps ---------------------------------------------------------- */
-.t-display { font-size: var(--fs-display); font-stretch: 75%; font-weight: 700; line-height: 1.02; letter-spacing: -0.024em; }
-h1, .t-h1   { font-size: var(--fs-h1);   font-stretch: 75%;  font-weight: 700; line-height: 1.06; letter-spacing: -0.022em; }
-h2, .t-h2   { font-size: var(--fs-h2);   font-stretch: 85%;  font-weight: 600; line-height: 1.14; letter-spacing: -0.016em; }
-h3, .t-h3   { font-size: var(--fs-h3);   font-stretch: 90%;  font-weight: 600; line-height: 1.24; letter-spacing: -0.010em; }
-h4, .t-h4   { font-size: var(--fs-h4);   font-stretch: 100%; font-weight: 600; line-height: 1.30; letter-spacing: -0.006em; }
+.t-display { font-size: var(--fs-display); font-weight: 300; line-height: 1.08; letter-spacing: -0.018em; }
+h1, .t-h1 { font-size: var(--fs-h1); font-weight: 300; line-height: 1.14; letter-spacing: -0.014em; }
+h2, .t-h2 { font-size: var(--fs-h2); font-weight: 300; line-height: 1.22; letter-spacing: -0.010em; }
+h3, .t-h3 { font-size: var(--fs-h3); font-weight: 600; line-height: 1.32; letter-spacing: -0.004em; }
+h4, .t-h4 { font-size: var(--fs-h4); font-weight: 600; line-height: 1.4; }
 
-.lede {
-  font-size: var(--fs-lead);
-  line-height: 1.30;
-  letter-spacing: -0.006em;
-  max-width: var(--measure-lede);
-}
-.small { font-size: var(--fs-small); line-height: 1.55; }
+.lede { font-size: var(--fs-lead); font-weight: 300; line-height: 1.5; color: var(--ink); max-width: var(--measure-lede); }
+.small { font-size: var(--fs-small); line-height: 1.58; }
 
-/* The one uppercase micro-label. Padding-right cancels the trailing
-   letter-space so the optical edge stays flush. */
 .label {
-  font-size: var(--fs-micro);
-  font-weight: 600;
-  line-height: 1.30;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  padding-right: 0.08em;
+  font-size: var(--fs-micro); font-weight: 600; line-height: 1.3;
+  text-transform: uppercase; letter-spacing: 0.075em; padding-right: 0.075em;
   color: var(--ink-muted);
 }
 
@@ -161,37 +178,40 @@ h4, .t-h4   { font-size: var(--fs-h4);   font-stretch: 100%; font-weight: 600; l
 .wrap      { width: 100%; max-width: var(--container-prose); margin-inline: auto; padding-inline: var(--gutter); }
 .wrap-wide { width: 100%; max-width: var(--container-wide);  margin-inline: auto; padding-inline: var(--gutter); }
 
-.section { padding-block: clamp(64px, 8vw, 128px); }
+.section { padding-block: clamp(56px, 7vw, 112px); }
 .section--sunk { background: var(--paper-sunk); }
 .section--tight { padding-block: var(--s6); }
-
 .bleed { width: 100vw; margin-left: calc(50% - 50vw); }
 
-/* Section opener: a full-width 1.5px rule, the H2 hard against the left
-   gutter, one standfirst beneath. No numbered aside, no eyebrow column,
-   no tick — that armature is the most-copied editorial cliche of the
-   last four years and its 40x3px tick is an icon rebuilt from a rectangle. */
-.sec-head { border-top: 1.5px solid var(--ink); padding-top: var(--s3); margin-bottom: var(--s5); }
+/* Section opener. NUHS rules a heading off with a short brand bar rather
+   than a full-width hairline; the bar is a rectangle, not an icon. */
+.sec-head { margin-bottom: var(--s5); }
+.sec-head::before {
+  content: ""; display: block;
+  width: 56px; height: 4px; margin-bottom: var(--s3);
+  background: var(--cyan); border-radius: 2px;
+}
 .sec-head h2 { max-width: var(--measure-headline); }
 .sec-head .standfirst {
-  margin: var(--s2) 0 0;
-  font-size: var(--fs-small);
-  color: var(--ink-muted);
-  max-width: var(--measure-lede);
+  margin: var(--s2) 0 0; font-size: var(--fs-small);
+  color: var(--ink-muted); max-width: var(--measure-lede);
 }
+.band-invert .sec-head::before { background: var(--cyan); }
 
 /* --- Masthead ------------------------------------------------------------ */
 .skip {
   position: absolute; left: -9999px; top: 0; z-index: 100;
-  background: var(--accent); color: #fff; padding: 12px 20px; font-weight: 600;
+  background: var(--navy); color: #fff; padding: 12px 20px; font-weight: 600;
+  border-radius: 0 0 var(--radius) 0;
 }
 .skip:focus { left: 0; }
 
 .masthead {
   position: sticky; top: 0; z-index: 50;
   background: var(--paper);
-  border-bottom: 1px solid var(--rule-strong);
-  /* no shadow, no backdrop-filter */
+  border-bottom: 1px solid var(--rule);
+  /* A 3px brand rule under the header is NUHS's own device. */
+  box-shadow: inset 0 -4px 0 0 var(--navy);
 }
 .masthead__in {
   display: flex; align-items: center; gap: var(--s4);
@@ -199,152 +219,334 @@ h4, .t-h4   { font-size: var(--fs-h4);   font-stretch: 100%; font-weight: 600; l
   max-width: var(--container-wide); margin-inline: auto;
   padding-inline: var(--gutter);
 }
-.masthead__logo { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--ink); }
-.masthead__logo img { height: 32px; width: auto; }
-.masthead__logo span {
-  font-size: var(--fs-micro); font-weight: 600; text-transform: uppercase;
-  letter-spacing: 0.08em; padding-right: 0.08em; color: var(--ink-muted);
-  max-width: 15ch; line-height: 1.2;
+.masthead__logo {
+  display: flex; align-items: center; gap: 14px;
+  text-decoration: none; color: var(--navy);
+  padding-block: 10px; border-radius: var(--radius);
+  transition: opacity var(--t-tick) var(--ease);
 }
+.masthead__logo:hover { opacity: 0.78; }
+/* The mark is cropped to the cross and the NUHS wordmark only. The
+   "National University Health System" descender was unreadable at header
+   size and duplicated the descriptor sitting next to it. */
+.masthead__logo img { display: block; height: 44px; width: auto; }
+.masthead__wordmark {
+  font-size: 1rem; font-weight: 600; line-height: 1.22;
+  color: var(--navy); text-wrap: balance;
+  padding-left: 16px; border-left: 1px solid var(--rule);
+}
+/* On a phone the wordmark cannot hold two lines beside the mark without
+   breaking "Preventive Medicine" apart, so it drops out of sight and stays
+   in the link's accessible name. Every page's h1 names the programme. */
+@media (max-width: 39.99em) {
+  .masthead__logo img { height: 40px; }
+  .masthead__wordmark {
+    position: absolute; width: 1px; height: 1px;
+    margin: -1px; padding: 0; overflow: hidden;
+    clip-path: inset(50%); white-space: nowrap; border: 0;
+  }
+}
+
 .nav { margin-left: auto; }
 .nav ul { display: flex; gap: var(--s3); list-style: none; margin: 0; padding: 0; flex-wrap: wrap; }
 .nav a {
-  display: flex; align-items: center; min-height: 40px;
+  position: relative;
+  display: flex; align-items: center; min-height: 44px;
   font-size: 0.9375rem; font-weight: 600; color: var(--ink);
-  text-decoration: none; border-bottom: 3px solid transparent;
-  transition: color var(--t) var(--ease), border-color var(--t) var(--ease);
+  text-decoration: none;
+  transition: color var(--t-tick) var(--ease);
 }
-.nav a:hover { color: var(--accent); }
-/* Current page: a 3px NAVY rule (10.11:1) plus a weight change — never
-   orange, which at 2.94:1 fails the 3:1 state-indicator threshold, and
-   never colour alone. */
-.nav a[aria-current="page"] { border-bottom-color: var(--accent); color: var(--accent); }
+/* Microanimation: the underline grows out of the centre on hover. It is a
+   pseudo-element rather than a border so it can scale without reflow. */
+.nav a::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 10px;
+  height: 3px; background: var(--navy); border-radius: 2px;
+  transform: scaleX(0); transform-origin: 50% 50%;
+  transition: transform var(--t-beat) var(--ease-out);
+}
+.nav a:hover { color: var(--navy); }
+.nav a:hover::after { transform: scaleX(1); }
+/* Current page: the same navy underline, held permanently open. It is NOT
+   the brand cyan — cyan measures 2.71:1 on white, under the 3:1 that a
+   state indicator has to clear (SC 1.4.11). Cyan is used only where it is
+   decoration and carries no meaning. */
+.nav a[aria-current="page"] { color: var(--navy); }
+.nav a[aria-current="page"]::after { transform: scaleX(1); }
 
-.nav__toggle { display: none; cursor: pointer; }
+.nav__toggle { display: none; }
 button, [role="button"], summary { cursor: pointer; }
 
 /* --- Links --------------------------------------------------------------- */
-a { color: var(--accent); }
-.link {
-  font-size: 1.125rem; font-weight: 600; color: var(--accent);
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 3px;
-  text-decoration-color: color-mix(in srgb, var(--accent) 35%, transparent);
-  /* padding-block expands the hit box past the 24px SC 2.5.8 floor without
-     changing the line box, so standalone links clear it and inline ones
-     (which are exempt anyway) are unaffected */
-  padding-block: 4px;
-  transition: text-decoration-color var(--t) var(--ease), text-decoration-thickness var(--t) var(--ease);
-}
-.link:hover { text-decoration-thickness: 2px; text-decoration-color: var(--accent); }
+a { color: var(--link); }
+a:hover { color: var(--alert); }        /* NUHS --nuhs-color-hover */
 
-/* Focus — solid 3px outline works identically on paper, sunk and white,
-   clears SC 1.4.11 and SC 2.4.13, and survives Windows High Contrast. */
-:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
-/* MANDATORY companion: every inverted surface declares its own focus colour,
-   or the site's only conversion elements have a 1.36:1 invisible ring. */
+.link {
+  display: inline-block;
+  font-size: 1rem; font-weight: 600; color: var(--link);
+  text-decoration: none;
+  padding-block: 4px;
+  background-image: linear-gradient(var(--alert), var(--alert));
+  background-size: 0% 2px; background-position: 0 100%; background-repeat: no-repeat;
+  box-shadow: inset 0 -2px 0 -1px color-mix(in srgb, var(--link) 40%, transparent);
+  transition: color var(--t-tick) var(--ease), background-size var(--t-beat) var(--ease-out);
+}
+.link:hover { color: var(--alert); background-size: 100% 2px; }
+.band-invert .link {
+  color: #FFFFFF;
+  background-image: linear-gradient(var(--cyan), var(--cyan));
+  box-shadow: inset 0 -2px 0 -1px rgb(255 255 255 / .45);
+}
+.band-invert .link:hover { color: #FFFFFF; }
+
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
 .band-invert :focus-visible { outline-color: #FFFFFF; }
 
-/* --- Hero ----------------------------------------------------------------
-   Exaggerated-minimalism treatment: the headline runs at the display step
-   (up to 84px) on a 16ch measure so it breaks across four lines graphically,
-   with the facts held in a narrow ruled column on a 7/5 asymmetric split.
-   The air around it is doing as much work as the type.
-   ------------------------------------------------------------------------ */
-.hero { padding-top: clamp(56px, 7vw, 112px); padding-bottom: clamp(48px, 6vw, 96px); }
+/* ==========================================================================
+   BUTTONS — every one carries a microanimation
+   --------------------------------------------------------------------------
+   Three states, on all of them, without exception:
+     hover  colour shifts, the face lifts 2px, the shadow deepens
+     active the lift collapses to 0 and the shadow flattens (a real press)
+     focus  a 3px ring, never a colour change alone
+   Sizes come from NUHS: 5px radius, .375rem/.75rem padding at base scale,
+   grown to a 48px hit target for anything that converts.
+   ========================================================================== */
+.btn, .cta {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: 10px;
+  min-height: 48px; padding: 13px var(--s4);
+  border: 1px solid transparent; border-radius: var(--radius);
+  font-family: inherit; font-size: 1rem; font-weight: 600; line-height: 1.25;
+  text-align: center; text-decoration: none;
+  cursor: pointer;
+  will-change: transform;
+  transition:
+    background-color var(--t-beat) var(--ease),
+    border-color     var(--t-beat) var(--ease),
+    color            var(--t-beat) var(--ease),
+    box-shadow       var(--t-beat) var(--ease),
+    transform        var(--t-beat) var(--ease-back);
+}
+
+/* Primary — NUHS navy, hovering to their accent blue */
+.cta, .btn--primary {
+  background: var(--navy); color: #FFFFFF;
+  box-shadow: 0 1px 2px rgb(0 34 78 / .22);
+}
+.cta:hover, .btn--primary:hover {
+  background: var(--accent); color: #FFFFFF;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgb(0 34 78 / .26);
+}
+.cta:active, .btn--primary:active {
+  background: var(--navy-deep);
+  transform: translateY(0);
+  box-shadow: inset 0 3px 5px rgb(0 0 0 / .18);   /* NUHS's own active shadow */
+  transition-duration: 60ms;                       /* a press must feel instant */
+}
+
+/* Secondary — NUHS #337AB7 to #2C6597 */
+.btn--secondary {
+  background: var(--accent); color: #FFFFFF;
+  box-shadow: 0 1px 2px rgb(0 34 78 / .18);
+}
+.btn--secondary:hover {
+  background: var(--accent-dark); color: #FFFFFF;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgb(0 34 78 / .22);
+}
+.btn--secondary:active {
+  transform: translateY(0);
+  box-shadow: inset 0 3px 5px rgb(0 0 0 / .18);
+  transition-duration: 60ms;
+}
+
+/* Outline — the quiet one. Its fill sweeps in from the left on hover. */
+.btn--outline {
+  position: relative; overflow: hidden;
+  background: transparent; color: var(--navy);
+  border-color: var(--rule-ui);
+}
+.btn--outline::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  background: var(--navy);
+  transform: scaleX(0); transform-origin: left center;
+  transition: transform var(--t-slow) var(--ease-out);
+}
+.btn--outline:hover {
+  color: #FFFFFF; border-color: var(--navy);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgb(0 34 78 / .18);
+}
+.btn--outline:hover::before { transform: scaleX(1); }
+.btn--outline:active { transform: translateY(0); box-shadow: none; transition-duration: 60ms; }
+/* z-index:-1 on the sweep needs a stacking context on the button itself,
+   or the fill paints behind the page background instead of behind the label */
+.btn--outline { isolation: isolate; }
+
+.cta .sub { display: block; font-size: var(--fs-micro); font-weight: 400; opacity: .82; }
+.cta { flex-direction: column; gap: 2px; }
+.cta-wrap { margin-block: var(--s4); display: flex; flex-wrap: wrap; gap: var(--s2); }
+
+/* On the inverted band the primary button inverts too, or navy-on-navy
+   disappears. White face, navy label, cyan on hover. */
+.band-invert .cta {
+  background: #FFFFFF; color: var(--navy);
+  box-shadow: 0 1px 2px rgb(0 0 0 / .28);
+}
+.band-invert .cta:hover { background: var(--cyan); color: var(--navy-deep); }
+.band-invert .cta:active { background: #E4F4FB; color: var(--navy-deep); }
+.band-invert .btn--outline { color: #FFFFFF; border-color: rgb(255 255 255 / .55); }
+.band-invert .btn--outline::before { background: #FFFFFF; }
+.band-invert .btn--outline:hover { color: var(--navy); border-color: #FFFFFF; }
+
+/* --- Hero ---------------------------------------------------------------- */
+.hero { padding-top: clamp(48px, 6vw, 96px); padding-bottom: clamp(40px, 5vw, 80px); }
 .hero__grid { display: grid; gap: var(--s5); align-items: start; }
 @media (min-width: 56.25em) {
-  /* centre, not end. Bottom-aligning a 4-line headline against a taller
-     fact column left a large void above the headline and read as a
-     mistake rather than as composition. */
   .hero__grid { grid-template-columns: 7fr 5fr; gap: var(--s7); align-items: center; }
 }
 .hero h1 {
-  font-size: var(--fs-display);
-  line-height: 1.02;
-  letter-spacing: -0.032em;
-  max-width: 16ch;
-  margin: 0;
+  font-size: var(--fs-display); font-weight: 300;
+  line-height: 1.08; letter-spacing: -0.018em;
+  max-width: 18ch; margin: 0;
 }
-/* Facts as a ruled column, not a comma list — reads as a spec sheet */
-.hero__facts { list-style: none; margin: 0; padding: 0; }
+.hero__facts { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule); }
 .hero__facts li {
   display: grid; gap: 2px;
   padding: var(--s2) 0;
-  border-top: 1px solid var(--rule-hair);
+  border-bottom: 1px solid var(--rule);
 }
-.hero__facts li:first-child { border-top: 1.5px solid var(--ink); }
-.hero__facts li:last-child { border-bottom: 1.5px solid var(--ink); }
-.hero__facts .v { font-size: var(--fs-h4); font-weight: 600; font-stretch: 90%; letter-spacing: -0.008em; }
-.hero__facts .k { font-size: var(--fs-micro); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-muted); }
+.hero__facts .v { font-size: var(--fs-h4); font-weight: 600; color: var(--navy); }
+.hero__facts .k { font-size: var(--fs-micro); color: var(--ink-muted); }
 
-/* Full-bleed 21:9 band — the one place photography runs edge to edge */
 .hero__band { margin: 0; }
 .hero__band img { aspect-ratio: 21 / 9; object-fit: cover; width: 100%; }
 @media (max-width: 47.5em) { .hero__band img { aspect-ratio: 4 / 3; } }
 .hero__band figcaption { max-width: var(--container-prose); margin-inline: auto; padding-inline: var(--gutter); }
 
-/* Credentials strip — "hidden credentials" is an anti-pattern for exactly
-   this audience, so accreditation sits above the fold, not in a footer */
-.creds { display: grid; gap: 0; border-top: 1.5px solid var(--ink); border-bottom: 1.5px solid var(--ink); }
+.hero__fig { margin: 0; }
+.hero__fig img { aspect-ratio: 16 / 9; object-fit: cover; width: 100%; border-radius: var(--radius); }
+/* --- Hero background video -----------------------------------------------
+   The homepage hero sits on a 20-second loop of the programme's own motion
+   graphic: a near-white pixel field with occasional brand-blue cells. It is
+   decoration, not content. There is no audio track in the encode at all, the
+   layer is aria-hidden and pointer-events:none, and the poster still is the
+   clip's own first frame, so the handover from image to video is invisible.
+
+   Nothing is fetched until the script in index.html decides the visit
+   qualifies. A phone, a metered connection, or anyone who asked for less
+   motion gets the 30KB still and no 1.4MB download.
+   ------------------------------------------------------------------------ */
+.hero-stage { position: relative; isolation: isolate; overflow: hidden; background: var(--paper); }
+.hero-stage > .hero { position: relative; z-index: 1; }
+
+.hero-stage__bg {
+  position: absolute; inset: 0; z-index: 0;
+  pointer-events: none; overflow: hidden;
+  background: var(--paper) center / cover no-repeat;
+  background-image: url('../img/hero-video-poster.jpg');
+  background-image: image-set(
+    url('../img/hero-video-poster.webp') type('image/webp'),
+    url('../img/hero-video-poster.jpg')  type('image/jpeg'));
+}
+.hero-stage__bg video {
+  display: block; width: 100%; height: 100%; object-fit: cover;
+  opacity: 0; transition: opacity 900ms var(--ease);
+}
+.hero-stage__bg video[data-playing="true"] { opacity: 1; }
+
+/* Below the hero's own two-column breakpoint the section stacks and runs
+   roughly 375 x 960, and object-fit / background-size: cover would blow a
+   16:9 field up 4.5x — the cells stop reading as a texture and start reading
+   as blocks. So the whole layer goes, and the narrow hero is exactly the
+   paper-white it was before. The script runs the same query before it
+   fetches anything, so nothing is downloaded to be hidden. */
+@media (max-width: 56.24em) {
+  .hero-stage__bg { display: none; }
+}
+
+/* A white veil over the clip, fading to paper at both edges so the band has
+   no seam against the masthead above or the photograph below. 60% through the
+   middle is as far as it can be pushed: the clip's darkest cells are a deep
+   brand blue, around #204D81, and every extra point of white takes the
+   texture with it. */
+.hero-stage__bg::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgb(255 255 255 / .88)  0%,
+    rgb(255 255 255 / .60) 12%,
+    rgb(255 255 255 / .60) 66%,
+    rgb(255 255 255 / .90) 100%);
+}
+
+/* Two colours are raised for the hero only. Measured against the darkest
+   cell the clip ever shows, under that 60% veil:
+
+     h1, .statement, .hero__facts .v   navy    #002F6C   6.37:1   unchanged
+     .hero__facts .k                   muted   #5F6A75   2.72:1   FAILS
+     .link                             link    #2C6597   3.03:1   FAILS
+
+   No veil fixes those two — #5F6A75 only holds 5.92:1 on pure white, so it
+   has no headroom to give. Taking the 13px label to base ink and the hero's
+   one link to brand navy restores 6.22:1 and 6.37:1 against the same cell.
+   The link keeps its underline rule, so colour is not carrying the
+   affordance on its own. Everywhere else on the site both colours stay. */
+.hero-stage .hero__facts .k { color: var(--ink); }
+.hero-stage .hero .link {
+  color: var(--navy);
+  box-shadow: inset 0 -2px 0 -1px color-mix(in srgb, var(--navy) 42%, transparent);
+}
+
+
+.caption {
+  font-size: var(--fs-micro); color: var(--ink-muted);
+  padding-top: var(--s1); margin-top: var(--s1);
+  max-width: var(--measure-caption);
+}
+
+.creds { display: grid; gap: 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
 @media (min-width: 47.5em) { .creds { grid-template-columns: repeat(3, 1fr); } }
 .creds > div { padding: var(--s3) var(--s3) var(--s3) 0; }
 @media (min-width: 47.5em) { .creds > div + div { border-left: 1px solid var(--rule-hair); padding-left: var(--s3); } }
 @media (max-width: 47.49em) { .creds > div + div { border-top: 1px solid var(--rule-hair); } }
 .creds .k { display: block; margin-bottom: 4px; }
 
-.hero__fig { margin: 0; }
-.hero__fig img { aspect-ratio: 16 / 9; object-fit: cover; width: 100%; }
-.caption {
-  font-size: var(--fs-micro); color: var(--ink-muted);
-  border-top: 1px solid var(--rule-hair); padding-top: var(--s1); margin-top: var(--s1);
-  max-width: var(--measure-caption);
-}
-
-/* Spec strip — the fact line under the H1. Separators are generated, never
-   literal pipe characters, which screen readers announce inconsistently. */
-.spec {
-  list-style: none; margin: var(--s2) 0 0; padding: 0;
-  display: flex; flex-wrap: wrap; gap: 0 var(--s2);
-}
-.spec li { font-size: var(--fs-micro); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-muted); }
+.spec { list-style: none; margin: var(--s2) 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0 var(--s2); }
+.spec li { font-size: var(--fs-micro); font-weight: 600; color: var(--ink-muted); }
 .spec li + li::before { content: "·"; margin-right: var(--s2); color: var(--rule-strong); }
 
-/* --- Statement lede (Noto Serif, place 1 of 2) --------------------------- */
+/* --- Statement lede ------------------------------------------------------
+   Open Sans Light at display size. NUHS has no serif in its identity, so
+   the previous Noto Serif pull is gone and the weight carries it instead. */
 .statement {
-  font-family: 'Noto Serif', Georgia, serif;
   font-size: clamp(1.375rem, 1.05rem + 1.44vw, 2rem);
-  line-height: 1.30; letter-spacing: -0.015em;
-  max-width: var(--measure-lede);
-  margin: 0;
+  font-weight: 300; line-height: 1.38; letter-spacing: -0.012em;
+  color: var(--navy); max-width: var(--measure-lede); margin: 0;
 }
 
 /* --- Decision numbers ---------------------------------------------------- */
 .stats {
   display: grid; grid-template-columns: repeat(2, 1fr);
-  border-top: 1.5px solid var(--ink); border-bottom: 1.5px solid var(--ink);
+  border: 1px solid var(--rule); border-radius: var(--radius); overflow: hidden;
+  background: var(--paper);
 }
 @media (min-width: 56.25em) { .stats { grid-template-columns: repeat(4, 1fr); } }
-.stats > div { padding: var(--s4) var(--s3); }
+.stats > div { padding: var(--s4) var(--s3); border-top: 4px solid var(--cyan); }
 .stats > div + div { border-left: 1px solid var(--rule-hair); }
-@media (max-width: 56.24em) { .stats > div:nth-child(3) { border-left: 0; } .stats > div:nth-child(n+3) { border-top: 1px solid var(--rule-hair); } }
+@media (max-width: 56.24em) { .stats > div:nth-child(3) { border-left: 0; } }
 .stats .n {
   display: block;
-  font-size: var(--fs-stat); font-stretch: 75%; font-weight: 700;
-  line-height: 1.02; letter-spacing: -0.028em;
+  font-size: var(--fs-stat); font-weight: 300;
+  line-height: 1.04; letter-spacing: -0.02em;
   font-variant-numeric: lining-nums tabular-nums;
-  color: var(--ink);   /* never the accent — that makes it a dashboard KPI */
+  color: var(--navy);
 }
-.stats .lbl { display: block; margin-top: var(--s1); max-width: 18ch; }
-/* inline-block so the counter has stable box geometry while its text length
-   changes mid-count; tabular-nums on .n already holds the width steady. */
+.stats .lbl { display: block; margin-top: var(--s1); max-width: 20ch; }
 .stats .count { display: inline-block; }
-/* Denominator is context, not the achievement — set it down so the leading
-   figure still reads as the statistic. */
-.stats .den { font-size: 0.4em; font-weight: 600; letter-spacing: -0.01em; color: var(--ink-muted); margin-left: 0.3em; }
+.stats .den { font-size: 0.4em; font-weight: 600; color: var(--ink-muted); margin-left: 0.3em; }
 
-/* Visually hidden but available to assistive tech */
 .vh {
   position: absolute; width: 1px; height: 1px;
   margin: -1px; padding: 0; overflow: hidden;
@@ -355,264 +557,399 @@ a { color: var(--accent); }
 .prov {
   font-size: var(--fs-micro); color: var(--ink-muted);
   border-top: 1px solid var(--rule-hair);
-  padding-top: var(--s1); margin-top: var(--s2);
+  padding-top: var(--s2); margin-top: var(--s3);
   max-width: var(--measure-prose);
 }
 
-/* --- Spec table ---------------------------------------------------------- */
+/* --- Spec table ----------------------------------------------------------
+   One table treatment for the whole site, in the same hairline language as
+   .summary and .creds: a white panel inside a 1px rule, navy header band,
+   hairline row rules and nothing else. The zebra striping that used to run
+   underneath is gone — it fought the navy header, the tinted current row
+   and the section's own background, and none of those three could then be
+   read for what they were.
+   ------------------------------------------------------------------------ */
 .table-scroll { overflow-x: auto; }
-table.spec-table { width: 100%; border-collapse: collapse; font-variant-numeric: lining-nums tabular-nums; }
-table.spec-table caption { text-align: left; margin-bottom: var(--s2); font-size: var(--fs-small); color: var(--ink-muted); max-width: var(--measure-prose); }
+table.spec-table {
+  width: 100%;
+  /* separate, not collapse: collapse drops the corner radii. */
+  border-collapse: separate; border-spacing: 0;
+  border: 1px solid var(--rule); border-radius: var(--radius);
+  background: var(--paper);
+  font-variant-numeric: lining-nums tabular-nums;
+}
+table.spec-table caption {
+  text-align: left; margin-bottom: var(--s2);
+  font-size: var(--fs-small); color: var(--ink-muted);
+  max-width: var(--measure-prose);
+}
 table.spec-table th {
   text-align: left; font-size: var(--fs-micro); font-weight: 600;
-  text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-muted);
-  padding: 0 var(--s3) var(--s1) 0; border-bottom: 1.5px solid var(--ink);
+  text-transform: uppercase; letter-spacing: 0.075em; color: #FFFFFF;
+  background: var(--navy);
+  padding: var(--s2) var(--s3);
   vertical-align: bottom;
 }
 table.spec-table td {
-  padding: var(--s2) var(--s3) var(--s2) 0;
-  border-bottom: 1px solid var(--rule-hair);
+  padding: var(--s3);
+  border-top: 1px solid var(--rule-hair);
   vertical-align: top;
 }
-table.spec-table tr:last-child td { border-bottom: 1.5px solid var(--ink); }
-table.spec-table tbody tr { transition: border-color var(--t) var(--ease); }
-/* Hover = the hairline strengthens. The shadowless equivalent of elevation. */
-table.spec-table tbody tr:hover td { border-bottom-color: var(--rule-ui); }
-table.spec-table td.num, table.spec-table th.num { text-align: right; padding-right: 0; }
-/* The one orange fill on a table: "this is now", always with a text label. */
-tr.is-now td { background: var(--signal); border-bottom-color: var(--signal); }
-tr.is-now td, tr.is-now td strong { color: var(--ink); }   /* 5.64:1 */
+table.spec-table thead + tbody tr:first-child td { border-top: 0; }
+/* Every one of these tables leads with a key column, so it is set like one. */
+table.spec-table tbody td:first-child { font-weight: 600; color: var(--navy); }
+table.spec-table tbody tr { transition: background-color var(--t-tick) var(--ease); }
+table.spec-table tbody tr:hover td { background: var(--paper-sunk); }
+table.spec-table td.num, table.spec-table th.num { text-align: right; }
+
+/* Corners, cell by cell, since the radius sits on the table. */
+table.spec-table thead tr:first-child th:first-child { border-top-left-radius: 4px; }
+table.spec-table thead tr:first-child th:last-child  { border-top-right-radius: 4px; }
+table.spec-table tbody tr:last-child td:first-child { border-bottom-left-radius: 4px; }
+table.spec-table tbody tr:last-child td:last-child  { border-bottom-right-radius: 4px; }
+
+/* "This is now" — navy marker, not cyan, because this one carries meaning.
+   The row also keeps its own words ("in Year 1 now"), so the colour is
+   never the only thing saying it. The marker is one bar down the row's left
+   edge; it used to repeat on every cell, giving a table three stripes. */
+table.spec-table tr.is-now td { background: var(--accent-soft); }
+table.spec-table tr.is-now td:first-child { box-shadow: inset 3px 0 0 var(--navy); }
+table.spec-table tr.is-now:hover td { background: var(--accent-soft); }
 
 /* --- Summary list -------------------------------------------------------- */
 .summary { margin: 0; }
 .summary > div {
   display: grid; gap: 0 var(--s3);
-  padding: var(--s2) 0;
-  border-top: 1px solid var(--rule-hair);
+  padding: var(--s3) 0;
+  border-bottom: 1px solid var(--rule);
 }
-.summary > div:first-child { border-top: 1.5px solid var(--ink); }
-.summary > div:last-child { border-bottom: 1.5px solid var(--ink); }
-@media (min-width: 40em) { .summary > div { grid-template-columns: 220px 1fr; } }
-.summary dt { margin: 0; }
+.summary > div:first-child { border-top: 1px solid var(--rule); }
+@media (min-width: 40em) { .summary > div { grid-template-columns: 240px 1fr; } }
+.summary dt { margin: 0; font-weight: 600; color: var(--navy); }
 .summary dd { margin: 0; }
 
-/* --- The 60-month chart — the signature object --------------------------- */
+/* --- The 60-month chart -------------------------------------------------- */
 .chart { --rowlabel: 208px; }
 .chart__scroll { overflow-x: auto; overflow-y: hidden; padding-bottom: var(--s2); }
 table.chart__t {
-  border-collapse: collapse;
-  table-layout: fixed;          /* widths come from <colgroup>, not content */
-  min-width: 1168px;            /* 208 + 60 x 16 */
-  width: 100%;
+  border-collapse: collapse; table-layout: fixed;
+  min-width: 1168px; width: 100%;
   font-variant-numeric: lining-nums tabular-nums;
 }
-table.chart__t caption {
-  text-align: left; margin-bottom: var(--s3);
-  font-size: var(--fs-small); color: var(--ink-muted); max-width: var(--measure-prose);
-}
-
-/* Row label. The previous version let a ~280px string sit in a 172px sticky
-   cell with no clip, so it painted over the whole of Year 1. Fixed width,
-   two lines, hidden overflow. */
+table.chart__t caption { text-align: left; margin-bottom: var(--s3); font-size: var(--fs-small); color: var(--ink-muted); max-width: var(--measure-prose); }
 .chart__t th[scope="row"] {
   text-align: left; vertical-align: middle;
-  padding: 6px var(--s2) 6px 0;
-  overflow: hidden;
+  padding: 6px var(--s2) 6px 0; overflow: hidden;
   position: sticky; left: 0; z-index: 2;
   background: var(--paper);
-  border-right: 1.5px solid var(--ink);
+  border-right: 2px solid var(--navy);
   border-bottom: 1px solid var(--rule-hair);
-  font-weight: 400;
+  font-weight: 400; color: var(--ink);
 }
 .section--sunk .chart__t th[scope="row"] { background: var(--paper-sunk); }
-.chart__t th[scope="row"] .yrname { display: block; font-size: var(--fs-micro); font-weight: 600; line-height: 1.3; }
+.chart__t th[scope="row"] .yrname { display: block; font-size: var(--fs-micro); font-weight: 600; line-height: 1.3; color: var(--navy); }
 .chart__t th[scope="row"] .yrmeta { display: block; font-size: 0.75rem; line-height: 1.3; color: var(--ink-muted); }
-
-/* Month-number tick row */
-.chart__t th.tick {
-  font-size: 0.75rem; font-weight: 500; color: var(--ink-muted);
-  text-align: left; padding: 0 0 4px 4px; font-variant-numeric: tabular-nums;
-}
-/* NOT display:flex — that pulls the cell out of table layout and collapses
-   it to its content width. float keeps display:table-cell intact. */
+.chart__t th.tick { font-size: 0.75rem; font-weight: 400; color: var(--ink-muted); text-align: left; padding: 0 0 4px 4px; font-variant-numeric: tabular-nums; }
 .chart__t th.tick.last { padding-right: 3px; }
 .chart__t th.tick.last span + span { float: right; }
 .chart__t th.corner { position: sticky; left: 0; z-index: 2; background: var(--paper); text-align: left; }
 .section--sunk .chart__t th.corner { background: var(--paper-sunk); }
-
-/* Year band row */
 .chart__t th.yr {
   text-align: left; font-size: var(--fs-micro); font-weight: 600;
-  text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-muted);
-  padding: 0 0 6px 4px; border-bottom: 1.5px solid var(--ink);
+  text-transform: uppercase; letter-spacing: 0.075em; color: var(--navy);
+  padding: 0 0 6px 4px; border-bottom: 2px solid var(--navy);
 }
-.chart__t th.yr + th.yr, .chart__t td.yb { border-left: 1.5px solid var(--ink); }
-.chart__t thead th.corner { border-bottom: 1.5px solid var(--ink); border-right: 1.5px solid var(--ink); }
-
-/* Posting blocks. One labelled cell per contiguous run rather than a letter
-   in all 480 cells — same table semantics via colspan, a fraction of the
-   visual noise. */
+.chart__t th.yr + th.yr, .chart__t td.yb { border-left: 2px solid var(--navy); }
+.chart__t thead th.corner { border-bottom: 2px solid var(--navy); border-right: 2px solid var(--navy); }
 .chart__t td {
-  height: 30px; padding: 0 0 0 5px;
-  text-align: left;
-  font-size: 0.75rem; font-weight: 500; font-stretch: 87%;
-  line-height: 1; white-space: nowrap; overflow: hidden;
-  color: var(--ink);
+  height: 30px; padding: 0 0 0 5px; text-align: left;
+  font-size: 0.75rem; font-weight: 600; line-height: 1;
+  white-space: nowrap; overflow: hidden; color: var(--navy);
   border-right: 1px solid var(--paper);
   border-bottom: 1px solid var(--rule-hair);
+  transition: filter var(--t-tick) var(--ease);
 }
 .section--sunk .chart__t td { border-right-color: var(--paper-sunk); }
-.chart__t td.b-M { background: #DDE3EC; color: var(--accent); font-weight: 600; }
-.chart__t td.b-A { background: #EAE4D8; }
-.chart__t td.b-H { background: #D6DDE7; }
-.chart__t td.b-F { background: #E3E8EF; }
-.chart__t td.b-E { background: #F0EADF; }
-.chart__t td.b-X { background: #E8E2D6; color: var(--ink-muted); font-style: normal; }
-.chart__t td.now { background: var(--signal); color: var(--ink); font-weight: 700; }
+/* Blocks tint the brand blue by depth rather than introducing new hues. */
+.chart__t td.b-M { background: #BFE6F6; }
+.chart__t td.b-A { background: #DCE7F1; }
+.chart__t td.b-H { background: #CBDCEC; }
+.chart__t td.b-F { background: #E3EDF6; }
+.chart__t td.b-E { background: #EFF4F9; }
+.chart__t td.b-X { background: #EDF0F3; color: var(--ink-muted); }
+.chart__t td.now { background: var(--navy); color: #FFFFFF; }
 .chart__t td.empty { background: transparent; }
-
 .chart__legend { list-style: none; display: flex; flex-wrap: wrap; gap: var(--s1) var(--s4); margin: var(--s4) 0 0; padding: 0; font-size: var(--fs-micro); color: var(--ink-muted); }
 .chart__legend li { display: flex; align-items: center; gap: 8px; }
-.chart__legend .sw { width: 22px; height: 14px; flex: none; border: 1px solid var(--rule-hair); }
+.chart__legend .sw { width: 22px; height: 14px; flex: none; border: 1px solid var(--rule); border-radius: 2px; }
 .chart__note { font-size: var(--fs-micro); color: var(--ink-muted); margin-top: var(--s3); max-width: var(--measure-prose); }
 
-/* --- Apply band ---------------------------------------------------------- */
-.band-invert { background: var(--accent-deep); color: var(--ink-invert); }
-.band-invert h2, .band-invert h3 { color: var(--ink-invert); }
-.band-invert p { color: var(--ink-invert); }
-.band-invert a { color: var(--ink-invert); }
-.band-invert .label { color: color-mix(in srgb, #fff 78%, transparent); }
+/* --- Inverted band ------------------------------------------------------- */
+.band-invert { background: var(--navy); color: var(--ink-invert); }
+.band-invert h2, .band-invert h3, .band-invert h4 { color: var(--ink-invert); }
+.band-invert p { color: rgb(255 255 255 / .92); }
+.band-invert .label { color: rgb(255 255 255 / .78); }
 .band__grid { display: grid; gap: var(--s5); align-items: start; }
 @media (min-width: 56.25em) { .band__grid { grid-template-columns: 1.2fr 1fr; gap: var(--s7); } }
 
-/* --- CTA ----------------------------------------------------------------- */
-.cta {
-  display: inline-flex; flex-direction: column; justify-content: center;
-  min-height: 48px; padding: 14px var(--s4);
-  background: var(--signal); color: var(--ink);      /* 5.64:1 */
-  border: 0; border-radius: 0;
-  font-family: inherit; font-size: 1.0625rem; font-weight: 700;
-  text-decoration: none;
-  transition: background-color var(--t) var(--ease);
+/* --- Card ----------------------------------------------------------------
+   NUHS uses a plain 1px #DDD card at 5px radius. Hover lifts it; that is
+   the whole treatment. No gradient, no glass. */
+.card {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: var(--s4);
+  transition: transform var(--t-beat) var(--ease-out),
+              box-shadow var(--t-beat) var(--ease),
+              border-color var(--t-beat) var(--ease);
 }
-.cta:hover { background: #C86400; }
-/* The CTA keeps ink text even inside the inverted band. Without this,
-   `.band-invert a` (0,1,1) outranks `.cta` (0,1,0) and the label flips to
-   white on orange — 3.12:1, an AA failure on the one element that converts. */
-.band-invert .cta { color: var(--ink); }
-.cta .sub { font-size: var(--fs-micro); font-weight: 400; letter-spacing: 0; text-transform: none; }
-.cta-wrap { margin-block: var(--s4); }
+.card:hover { border-color: var(--rule-strong); box-shadow: 0 6px 20px rgb(0 34 78 / .10); }
 
-/* --- Director's letter (Noto Serif, place 2 of 2) ------------------------ */
+/* --- Director's letter --------------------------------------------------- */
 .letter__grid { display: grid; gap: var(--s4); }
-@media (min-width: 40em) { .letter__grid { grid-template-columns: 160px 1fr; gap: var(--s5); } }
-.letter__portrait img { aspect-ratio: 4 / 5; object-fit: cover; width: 160px; border: 1px solid var(--rule-hair); border-radius: 2px; }
-.letter__body { font-family: 'Noto Serif', Georgia, serif; font-size: var(--fs-lead); line-height: 1.62; max-width: 62ch; }
-.letter__body p { max-width: 62ch; }
-.sig { border-top: 1px solid var(--rule-hair); padding-top: var(--s2); margin-top: var(--s3); font-family: 'Archivo', sans-serif; font-size: var(--fs-small); color: var(--ink-muted); }
-.sig strong { color: var(--ink); display: block; font-size: var(--fs-body); }
+@media (min-width: 40em) { .letter__grid { grid-template-columns: 170px 1fr; gap: var(--s5); } }
+.letter__portrait img { aspect-ratio: 4 / 5; object-fit: cover; width: 170px; border-radius: var(--radius); }
+.letter__body { font-size: var(--fs-lead); font-weight: 300; line-height: 1.62; max-width: 64ch; }
+.letter__body p { max-width: 64ch; }
+.sig { border-top: 1px solid var(--rule); padding-top: var(--s2); margin-top: var(--s3); font-size: var(--fs-small); color: var(--ink-muted); }
+.sig strong { color: var(--navy); display: block; font-size: var(--fs-body); font-weight: 600; }
 
 /* --- Pull quote ---------------------------------------------------------- */
-.pull { border-top: 1.5px solid var(--ink); padding-top: var(--s3); margin: 0; }
+.pull { border-left: 4px solid var(--cyan); padding: 0 0 0 var(--s4); margin: 0; }
 .pull p {
-  font-family: 'Noto Serif', Georgia, serif;
-  font-size: var(--fs-h2); font-stretch: normal; font-weight: 400;
-  line-height: 1.28; letter-spacing: -0.015em;
-  max-width: var(--measure-quote);
-  margin: 0;
+  font-size: var(--fs-h2); font-weight: 300; line-height: 1.34;
+  letter-spacing: -0.010em; color: var(--navy);
+  max-width: var(--measure-quote); margin: 0;
 }
-.pull cite { display: block; margin-top: var(--s3); font-style: normal; }
+.pull cite { display: block; margin-top: var(--s3); font-style: normal; font-size: var(--fs-small); color: var(--ink-muted); }
 
-/* --- Ruled list (destinations, examples) --------------------------------- */
+/* --- Ruled list ---------------------------------------------------------- */
 .ruled { list-style: none; margin: 0; padding: 0; }
-.ruled li { padding: var(--s2) 0; border-top: 1px solid var(--rule-hair); }
-.ruled li b { display: block; font-weight: 600; font-stretch: 90%; letter-spacing: -0.006em; }
+.ruled li { padding: var(--s3) 0; border-bottom: 1px solid var(--rule); }
+.ruled li:first-child { border-top: 1px solid var(--rule); }
+.ruled li b { display: block; font-weight: 600; color: var(--navy); }
 .ruled li .k { display: block; font-size: var(--fs-small); color: var(--ink-muted); margin-top: 2px; }
-.ruled li:first-child { border-top: 1.5px solid var(--ink); }
-.ruled li:last-child { border-bottom: 1.5px solid var(--ink); }
 .cols-2 { display: grid; gap: 0 var(--s5); }
-@media (min-width: 40em) { .cols-2 { grid-template-columns: 1fr 1fr; } .cols-2 > li:nth-child(2) { border-top: 1.5px solid var(--ink); } }
+@media (min-width: 40em) { .cols-2 { grid-template-columns: 1fr 1fr; } .cols-2 > li:nth-child(2) { border-top: 1px solid var(--rule); } }
 
-/* Photograph pairs. One column on a phone, two side by side from tablet up. */
 .photo-grid { display: grid; gap: var(--s4); margin-top: var(--s5); }
 @media (min-width: 50em) { .photo-grid { grid-template-columns: 1fr 1fr; gap: var(--s5); } }
+.photo-grid img { border-radius: var(--radius); }
 
-/* Dated example rows */
-.example { display: grid; gap: var(--s1); padding: var(--s3) 0; border-top: 1px solid var(--rule-hair); }
-.example:first-of-type { border-top: 1.5px solid var(--ink); }
-.example:last-of-type { border-bottom: 1.5px solid var(--ink); }
-@media (min-width: 56.25em) { .example { grid-template-columns: 180px 1fr; gap: var(--s4); } }
+.example { display: grid; gap: var(--s1); padding: var(--s3) 0; border-bottom: 1px solid var(--rule); }
+.example:first-of-type { border-top: 1px solid var(--rule); }
+@media (min-width: 56.25em) { .example { grid-template-columns: 190px 1fr; gap: var(--s4); } }
+
+/* ==========================================================================
+   PEOPLE — faculty roster
+   ========================================================================== */
+.people-grid { display: grid; gap: var(--s4); grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); }
+/* The card's parts are spans, so each one is declared block or flex here.
+   Left inline they collapse into one another and the body's top rule and
+   padding land on top of the name. */
+.person {
+  display: flex; flex-direction: column;
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: transform var(--t-beat) var(--ease-out),
+              box-shadow var(--t-beat) var(--ease),
+              border-color var(--t-beat) var(--ease);
+}
+.person:hover { transform: translateY(-3px); border-color: var(--rule-strong); box-shadow: 0 8px 22px rgb(0 34 78 / .13); }
+.person__img { display: block; position: relative; overflow: hidden; background: var(--paper-sunk); }
+.person__img img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; transition: transform var(--t-slow) var(--ease-out); }
+.person:hover .person__img img { transform: scale(1.035); }
+.person__body {
+  display: flex; flex-direction: column; align-items: flex-start;
+  flex: 1 1 auto;
+  padding: var(--s3); border-top: 3px solid var(--cyan);
+}
+.person__name { display: block; font-size: var(--fs-h4); font-weight: 600; line-height: 1.3; color: var(--navy); margin: 0 0 4px; }
+.person__role { font-size: var(--fs-micro); color: var(--ink-muted); margin: 0; max-width: none; }
+.person__note { font-size: var(--fs-micro); color: var(--ink); margin: var(--s2) 0 0; max-width: none; }
+/* auto pins the link to the foot of the card, so it sits on one line across
+   a row whatever length the names and notes above it run to. */
+.person__link { margin-top: auto; padding-top: var(--s2); font-size: var(--fs-micro); font-weight: 600; }
+.person--lead .person__body { border-top-color: var(--navy); }
+
+/* ==========================================================================
+   TESTIMONIALS — the four resident accounts
+   ========================================================================== */
+.tst { display: grid; gap: var(--s5); }
+.tst__item {
+  display: grid; gap: var(--s4);
+  padding-bottom: var(--s5);
+  border-bottom: 1px solid var(--rule);
+}
+.tst__item:last-child { border-bottom: 0; padding-bottom: 0; }
+@media (min-width: 50em) { .tst__item { grid-template-columns: 200px 1fr; gap: var(--s5); } }
+.tst__aside { align-self: start; }
+.tst__aside img {
+  width: 170px; aspect-ratio: 1; object-fit: cover;
+  border-radius: 50%; border: 4px solid var(--paper-sunk);
+  transition: border-color var(--t-beat) var(--ease);
+}
+.tst__item:hover .tst__aside img { border-color: var(--accent-soft); }
+.tst__name { font-size: var(--fs-h3); font-weight: 600; color: var(--navy); margin: var(--s2) 0 2px; }
+.tst__year { font-size: var(--fs-micro); font-weight: 600; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.075em; }
+.tst__body { max-width: var(--measure-prose); }
+.tst__body p { margin-bottom: var(--s3); }
+.tst__body p:first-child::first-letter { font-weight: 600; }
+
+/* ==========================================================================
+   PHOTOS — album covers, then a 3-column grid inside each album
+   ========================================================================== */
+.album-grid { display: grid; gap: var(--s4); grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+/* Same rule as .person: every part is a span, so every part is declared
+   block or flex. Left inline the count, the description and "Open this
+   album" run together on one line and the body's top rule crosses them. */
+.album {
+  display: flex; flex-direction: column; position: relative;
+  border: 1px solid var(--rule); border-radius: var(--radius);
+  overflow: hidden; text-decoration: none; background: var(--paper);
+  transition: transform var(--t-beat) var(--ease-out),
+              box-shadow var(--t-beat) var(--ease),
+              border-color var(--t-beat) var(--ease);
+}
+.album:hover { transform: translateY(-4px); border-color: var(--navy); box-shadow: 0 10px 26px rgb(0 34 78 / .16); }
+.album__img { display: block; overflow: hidden; background: var(--paper-sunk); }
+.album__img img { display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover; transition: transform var(--t-slow) var(--ease-out); }
+.album:hover .album__img img { transform: scale(1.05); }
+.album__body {
+  display: flex; flex-direction: column; align-items: flex-start;
+  flex: 1 1 auto;
+  padding: var(--s3); border-top: 3px solid var(--cyan);
+}
+.album__title { display: block; font-size: var(--fs-h4); font-weight: 600; line-height: 1.3; color: var(--navy); margin: 0; }
+.album__meta { display: block; font-size: var(--fs-micro); color: var(--ink-muted); margin: 6px 0 0; max-width: none; }
+/* The whole card is the link; the title carries the accessible name.
+   auto keeps "Open this album" on the card's bottom edge across the row. */
+.album__go { margin-top: auto; padding-top: var(--s3); font-size: var(--fs-micro); font-weight: 600; color: var(--accent); transition: color var(--t-tick) var(--ease); }
+.album:hover .album__go { color: var(--alert); }
+
+/* Three columns, as specified. Two on a tablet, one on a phone. */
+.grid-3 { display: grid; gap: var(--s3); grid-template-columns: 1fr; }
+@media (min-width: 34em) { .grid-3 { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 60em) { .grid-3 { grid-template-columns: repeat(3, 1fr); gap: var(--s4); } }
+
+.shot {
+  display: block; padding: 0; border: 1px solid var(--rule);
+  border-radius: var(--radius); overflow: hidden; background: var(--paper-sunk);
+  cursor: zoom-in; width: 100%;
+  transition: transform var(--t-beat) var(--ease-out),
+              box-shadow var(--t-beat) var(--ease),
+              border-color var(--t-beat) var(--ease);
+}
+.shot img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; transition: transform var(--t-slow) var(--ease-out); }
+.shot:hover { transform: translateY(-3px); border-color: var(--navy); box-shadow: 0 8px 22px rgb(0 34 78 / .16); }
+.shot:hover img { transform: scale(1.05); }
+.shot:active { transform: translateY(0); transition-duration: 60ms; }
+
+/* Lightbox. A <dialog>, so Escape and focus trapping are the browser's job
+   rather than ours. */
+.lightbox {
+  border: 0; padding: 0; max-width: 100vw; max-height: 100vh;
+  width: 100%; height: 100%; background: transparent; overflow: hidden;
+}
+.lightbox::backdrop { background: rgb(0 20 45 / .88); }
+.lightbox__in { display: grid; place-items: center; width: 100%; height: 100%; padding: var(--s5) var(--s3); }
+.lightbox img { max-width: min(1400px, 94vw); max-height: 82vh; width: auto; border-radius: var(--radius); }
+.lightbox__cap { color: #fff; font-size: var(--fs-small); margin-top: var(--s2); text-align: center; }
+.lightbox__close {
+  position: absolute; top: var(--s3); right: var(--s3);
+  min-height: 44px; padding: 10px 18px;
+  background: rgb(255 255 255 / .12); color: #fff;
+  border: 1px solid rgb(255 255 255 / .45); border-radius: var(--radius);
+  font-family: inherit; font-size: var(--fs-small); font-weight: 600;
+  transition: background-color var(--t-beat) var(--ease),
+              transform var(--t-beat) var(--ease-back);
+}
+.lightbox__close:hover { background: rgb(255 255 255 / .24); transform: translateY(-2px); }
+.lightbox__close:active { transform: translateY(0); transition-duration: 60ms; }
+.lightbox__nav { position: absolute; bottom: var(--s3); left: 50%; transform: translateX(-50%); display: flex; gap: var(--s2); align-items: center; }
+.lightbox__nav button {
+  min-height: 44px; padding: 10px 20px;
+  background: rgb(255 255 255 / .12); color: #fff;
+  border: 1px solid rgb(255 255 255 / .45); border-radius: var(--radius);
+  font-family: inherit; font-size: var(--fs-small); font-weight: 600;
+  transition: background-color var(--t-beat) var(--ease), transform var(--t-beat) var(--ease-back);
+}
+.lightbox__nav button:hover { background: rgb(255 255 255 / .24); transform: translateY(-2px); }
+.lightbox__nav button:active { transform: translateY(0); transition-duration: 60ms; }
+.lightbox__count { color: rgb(255 255 255 / .82); font-size: var(--fs-small); font-variant-numeric: tabular-nums; min-width: 6ch; text-align: center; }
+.lightbox :focus-visible { outline-color: #fff; }
 
 /* --- Contact ------------------------------------------------------------- */
 .contact__grid { display: grid; gap: var(--s4); }
-/* auto-fit rather than a fixed four, so the row stays flush when a card is
-   removed. The information-session card was dropped from every page once it
-   turned out no such session is published; a hard repeat(4) left a hole. */
 @media (min-width: 56.25em) { .contact__grid { grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: var(--s4); } }
-.contact__grid > div { border-top: 1.5px solid var(--ink); padding-top: var(--s2); }
+.contact__grid > div { border-top: 3px solid var(--cyan); padding-top: var(--s2); }
 
 /* --- Footer -------------------------------------------------------------- */
-.foot { border-top: 1px solid var(--rule-strong); padding-block: var(--s5); font-size: var(--fs-small); color: var(--ink-muted); }
-.foot ul { list-style: none; margin: 0 0 var(--s3); padding: 0; display: flex; flex-wrap: wrap; gap: var(--s1) var(--s3); }
+.foot {
+  background: var(--navy); color: rgb(255 255 255 / .82);
+  padding-block: var(--s6); font-size: var(--fs-small);
+}
+.foot ul { list-style: none; margin: 0 0 var(--s4); padding: 0; display: flex; flex-wrap: wrap; gap: var(--s1) var(--s4); }
 .foot a {
-  display: inline-flex; align-items: center; min-height: 24px;   /* SC 2.5.8 */
-  color: var(--ink); text-decoration: underline; text-underline-offset: 3px;
-  text-decoration-color: var(--rule-strong);
-  transition: color var(--t) var(--ease), text-decoration-color var(--t) var(--ease);
+  position: relative;
+  display: inline-flex; align-items: center; min-height: 28px;
+  color: #FFFFFF; text-decoration: none; font-weight: 600;
+  transition: color var(--t-tick) var(--ease);
 }
-.foot a:hover { text-decoration-color: var(--accent); color: var(--accent); }
-
-/* --- TODO marker — visible placeholder for facts not yet supplied.
-   Deliberately conspicuous so nothing unverified ships by accident. ------- */
-/* Editorial scaffolding, NOT a design element. Orange means "this is now"
-   and nothing else; spending it on 36 missing-data markers made the loudest
-   colour on the page repeat three dozen times saying the wrong thing.
-   A dotted underline in the UI grey is findable (and greppable) without
-   competing with content. */
-.todo {
-  color: var(--ink-muted);
-  text-decoration: underline dotted var(--rule-ui);
-  text-underline-offset: 3px;
-  font-style: normal;
+.foot a::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 2px;
+  height: 2px; background: var(--cyan);
+  transform: scaleX(0); transform-origin: left center;
+  transition: transform var(--t-beat) var(--ease-out);
 }
-.band-invert .todo { color: #C9D4E4; text-decoration-color: #6A82A0; }
-/* On the orange "now" row the muted grey drops to 2.3:1 — ink is 5.64:1. */
-.is-now .todo { color: var(--ink); text-decoration-color: rgb(26 25 23 / .45); }
-.stats .n.todo { color: var(--rule-ui); text-decoration: none; }
-.cta .todo { color: inherit; text-decoration-color: rgb(26 25 23 / .45); }
+.foot a:hover { color: var(--cyan); }
+.foot a:hover::after { transform: scaleX(1); }
+.foot p { color: rgb(255 255 255 / .78); max-width: var(--measure-prose); }
+.foot :focus-visible { outline-color: #FFFFFF; }
 
-/* --- Mobile nav ---------------------------------------------------------- */
-@media (max-width: 56.24em) {
+/* --- Mobile nav ----------------------------------------------------------
+   The eight nav items measure 647px and the logo lockup 352px, so the two
+   only share a row above about 1120px. Below that the nav becomes the drop
+   panel rather than wrapping to three ragged lines.
+   ------------------------------------------------------------------------ */
+@media (max-width: 71.99em) {
   .nav__toggle {
-    display: inline-flex; align-items: center; min-height: 40px; padding: 0 12px;
-    margin-left: auto;
-    background: var(--paper); color: var(--ink);
-    border: 1.5px solid var(--rule-ui); border-radius: 0;
-    font-family: inherit; font-size: 0.9375rem; font-weight: 600; cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
+    min-height: 44px; padding: 0 18px; margin-left: auto;
+    background: var(--navy); color: #FFFFFF;
+    border: 1px solid var(--navy); border-radius: var(--radius);
+    font-family: inherit; font-size: 0.9375rem; font-weight: 600;
+    transition: background-color var(--t-beat) var(--ease),
+                transform var(--t-beat) var(--ease-back),
+                box-shadow var(--t-beat) var(--ease);
+    box-shadow: 0 1px 2px rgb(0 34 78 / .22);
   }
+  .nav__toggle:hover { background: var(--accent); transform: translateY(-2px); box-shadow: 0 6px 16px rgb(0 34 78 / .24); }
+  .nav__toggle:active { transform: translateY(0); box-shadow: inset 0 3px 5px rgb(0 0 0 / .18); transition-duration: 60ms; }
+
   .nav {
     display: none; position: absolute; top: 100%; left: 0; right: 0;
-    background: var(--paper); border-bottom: 1px solid var(--rule-strong);
-    padding: var(--s2) var(--gutter) var(--s3);
-    /* THE ONE permitted shadow in the entire system — this genuinely floats */
-    box-shadow: 0 1px 3px rgb(26 25 23 / .10), 0 8px 24px rgb(26 25 23 / .08);
+    background: var(--paper); border-bottom: 4px solid var(--navy);
+    padding: var(--s1) var(--gutter) var(--s3);
+    box-shadow: 0 12px 28px rgb(0 34 78 / .16);
   }
-  .nav[data-open="true"] { display: block; }
+  .nav[data-open="true"] { display: block; animation: nav-drop var(--t-beat) var(--ease-out); }
+  @keyframes nav-drop { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
   .nav ul { flex-direction: column; gap: 0; }
   .nav li + li { border-top: 1px solid var(--rule-hair); }
-  .nav a { min-height: 48px; border-bottom: 0; border-left: 3px solid transparent; padding-left: 12px; }
-  .nav a[aria-current="page"] { border-left-color: var(--accent); border-bottom-color: transparent; }
+  .nav a { min-height: 50px; padding-left: 14px; border-left: 3px solid transparent; transition: border-color var(--t-beat) var(--ease), color var(--t-tick) var(--ease), padding-left var(--t-beat) var(--ease-out); }
+  .nav a::after { display: none; }
+  .nav a:hover { border-left-color: var(--cyan); padding-left: 20px; }
+  .nav a[aria-current="page"] { border-left-color: var(--navy); color: var(--navy); }
 }
 
-/* --- Cross-document navigation -------------------------------------------
-   A same-origin navigation cross-fades instead of hard-cutting, and the
-   masthead is named so it persists across the transition rather than being
-   repainted. Requires http(s) — it does nothing on file://, and it degrades
-   to the ordinary hard cut in browsers without support.
-   ------------------------------------------------------------------------ */
+/* --- Cross-document navigation ------------------------------------------- */
 @view-transition { navigation: auto; }
 ::view-transition-old(root),
-::view-transition-new(root) { animation-duration: 160ms; }
+::view-transition-new(root) { animation-duration: 180ms; }
 .masthead { view-transition-name: masthead; }
 
 /* --- Motion -------------------------------------------------------------- */
@@ -626,21 +963,32 @@ table.chart__t caption {
     transition-duration: .01ms !important;
     scroll-behavior: auto !important;
   }
-  /* The universal selector above does NOT match view-transition pseudo-
-     elements, so the cross-fade has to be killed by name or it survives the
-     reduced-motion preference entirely. */
+  /* Movement is removed, but the colour change on every state stays — take
+     both away and hover/active become invisible, which is worse than motion. */
+  .btn:hover, .cta:hover, .card:hover, .person:hover, .album:hover,
+  .shot:hover, .nav__toggle:hover, .lightbox__close:hover,
+  .lightbox__nav button:hover { transform: none !important; }
+  .person:hover .person__img img, .album:hover .album__img img,
+  .shot:hover img { transform: none !important; }
   ::view-transition-old(root),
   ::view-transition-new(root) { animation: none !important; }
+  /* The hero clip is never fetched under this preference — the script runs
+     the same media query before it touches the network. This is only here
+     for a setting flipped mid-visit: hide the element, keep the still. */
+  .hero-stage__bg video { display: none !important; }
 }
 
 /* --- Print --------------------------------------------------------------- */
 @media print {
   :root { --paper: #fff; --paper-sunk: #fff; }
-  .masthead, .cta-wrap, .band-invert, .nav__toggle, .skip { display: none !important; }
+  .masthead, .cta-wrap, .band-invert, .nav__toggle, .skip, .lightbox,
+  .hero-stage__bg { display: none !important; }
+  .foot { background: #fff; color: #000; }
+  .foot a { color: #000; }
   body { font-size: 10.5pt; }
   .section { padding-block: 18pt; }
   a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 8pt; color: #555; }
   .chart__scroll { overflow: visible; }
   table.chart__t { min-width: 0; font-size: 6pt; }
-  table, figure, .example, .summary > div { break-inside: avoid; }
+  table, figure, .example, .summary > div, .person, .album { break-inside: avoid; }
 }
