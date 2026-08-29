@@ -59,6 +59,23 @@
         <source data-src="assets/video/hero.mp4" type="video/mp4">
       </video>
     </div>
+  </div>
+
+  <!-- ================= HERO ================= -->
+  <div class="hero-stage">
+    <!-- Decorative background loop, so it is aria-hidden and carries no
+         controls. The <source> elements start with no src: the script at the
+         foot of the page fills them in only when the visit qualifies. The
+         poster still is painted by CSS on this div rather than by the poster
+         attribute, so it is there with JavaScript off as well. -->
+    <div class="hero-stage__bg" aria-hidden="true">
+      <video autoplay muted loop playsinline preload="none"
+             disablepictureinpicture disableremoteplayback
+             width="1920" height="1080">
+        <source data-src="assets/video/hero.webm" type="video/webm">
+        <source data-src="assets/video/hero.mp4" type="video/mp4">
+      </video>
+    </div>
 
     <section class="hero wrap">
       <div class="hero__grid">
@@ -106,8 +123,8 @@
     <div class="stats">
       <div>
         <span class="n">
-          <span class="vh">24</span>
-          <span aria-hidden="true"><span class="count" data-to="24">24</span></span>
+          <span class="vh">52</span>
+          <span aria-hidden="true"><span class="count" data-to="52">52</span></span>
         </span>
         <span class="lbl label">Residents currently in training</span>
       </div>
@@ -133,7 +150,6 @@
         <span class="lbl label">Traced to a current post</span>
       </div>
     </div>
-    <p class="prov">Source: Programme Office records, 2011&ndash;2026 intakes. Last verified 1 August 2026. Underlying figures are available on request from the Programme Office.</p>
   </section>
 
   <!-- ================= APPLY BAND ================= -->
@@ -165,7 +181,7 @@
   <section class="section">
     <div class="wrap">
       <div class="sec-head">
-        <h2>Where our residents train</h2>
+        <h2>Where our residents are</h2>
         <p class="standfirst">Two ministries beyond Health, a statutory board, a uniformed service and all three healthcare clusters.</p>
       </div>
       <ul class="ruled cols-2">
@@ -208,6 +224,9 @@
           Programme Director, National Preventive Medicine Residency Programme<br>
           Opening paragraph quoted from an interview with the <a href="https://www.sma.org.sg/" class="link" style="font-size:inherit">Singapore Medical Association</a>, 2018.
         </div>
+        <div class="cta-wrap">
+          <a class="btn btn--outline" href="people/index.html">Our Faculty Members</a>
+        </div>
       </div>
     </div>
   </section>
@@ -239,7 +258,6 @@
     <ul>
       <li><a href="index.html">Home</a></li>
       <li><a href="programme/index.html">The Programme</a></li>
-      <li><a href="programme/training-sites/index.html">Training Sites</a></li>
       <li><a href="admissions/index.html">Admissions</a></li>
       <li><a href="careers/index.html">Careers</a></li>
       <li><a href="alumni/index.html">Alumni</a></li>
